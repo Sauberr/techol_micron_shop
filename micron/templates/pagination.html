@@ -1,0 +1,97 @@
+{% load static %}
+
+
+<style>
+    .pagination {
+        margin-top: 20px;
+    }
+
+    .pagination .page-item {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .pagination .page-link,
+    .pagination .btn {
+        color: #000;
+        background-color: #fff;
+        border: 1px solid grey;
+    }
+
+    .pagination .page-item.active .btn {
+        background-color: grey;
+        color: #fff;
+        border: 1px solid grey;
+    }
+
+    .pagination .page-link:hover,
+    .pagination .btn:hover {
+        background-color: grey;
+        color: #fff;
+        border: 1px solid grey;
+    }
+
+    .pagination .page-link,
+    .pagination .btn,
+    .pagination .page-link:hover,
+    .pagination .btn:hover {
+        transition: background-color 0.3s, color 0.3s, border 0.3s;
+    }
+</style>
+
+{% if queryset.has_other_pages %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        {% if queryset.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ queryset.previous_page_number }}" data-page="{{ queryset.previous_page_number }}" tabindex="-1" aria-disabled="true">&#10094; Previous</a>
+        </li>
+        {% endif %}
+
+        {% for page in custom_range %}
+        {% if page == queryset.number %}
+        <li class="page-item active">
+            <span class="btn page-link btn--sub">{{ page }}</span>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="btn page-link" href="?page={{ page }}" data-page="{{ page }}">{{ page }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if queryset.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ queryset.next_page_number }}" data-page="{{ queryset.next_page_number }}">Next &#10095;</a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+
+
+
+<script type="text/javascript">
+    // GET SEARCH FORM AND PAGE LINKS
+    let searchform = document.getElementById('searchform')
+    let pagelinks = document.getElementsByClassName('page-link')
+    // ENSURE SEARCH FORM EXIST
+    if(searchform){
+        for(let i=0; pagelinks.length > i; i++ ){
+            pagelinks[i].addEventListener('click', function (e) {
+                e.preventDefault()
+
+                // GET THE DATA ATTRIBUTE
+                let page = this.dataset.page
+                // ADD HIDDEN SEARCH INPUT TO FORM
+                searchform.innerHTML += `<input value=${page} name="page" hidden/>`
+                // SUBMIT FORM
+                searchform.submit()
+            })
+        }
+    }
+
+</script>

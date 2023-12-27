@@ -1,0 +1,81 @@
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm, PasswordChangeForm)
+from django import forms
+from user_account.models import User
+from captcha.fields import CaptchaField
+
+
+class UserLoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control py-4', 'placeholder': 'Enter username'
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-4', 'placeholder': 'Enter password'
+    }))
+    remember_me = forms.BooleanField(
+        required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
+class UserRegistrationForm(UserCreationForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter first_name'
+    }))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter last_name'
+    }))
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter username'
+    }))
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter gmail'
+    }))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter password'
+    }))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter password again'
+    }))
+    captcha = CaptchaField()
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+
+    # Password validation
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password1'] != cd['password2']:
+            raise forms.ValidationError('Password1 don\'t match.')
+        return cd['password1']
+
+    # Email validation
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+
+        if User.objects.filter(email=data).exists():
+            raise forms.ValidationError('Email already in use.')
+        if len(data) >= 350:
+            raise forms.ValidationError('Your email is too long')
+        return data
+
+
+class PasswordChangingForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter old password'
+    }))
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter new password'
+    }))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control py-2', 'placeholder': 'Enter new password again'
+    }))
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2')

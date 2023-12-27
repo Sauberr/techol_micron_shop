@@ -1,0 +1,77 @@
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 80vh;
+        margin: 0;
+    }
+
+    .container {
+        flex: 1;
+    }
+
+    .footer-link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .footer-link:hover {
+        color: #a0a0a0;
+    }
+
+    footer {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+        margin-top: 103px; /* Push the footer to the bottom */
+        background-color: #343a40; /* Adjust background color as needed */
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: flex-end; /* Align social icons to the right */
+        align-items: center;
+    }
+
+    .social-icon {
+        margin-left: 5px;
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+    }
+</style>
+{% endblock %}
+
+<body>
+    <div class="container py-2">
+        <!-- Your main content goes here -->
+    </div>
+
+    <footer class="container py-2">
+        <div class="text-center">
+            <p class="mt-2 text-white">Copyright &copy; Micron 2023</p>
+            <p class="m-0 text-white mt-2">
+                <a href="#" class="footer-link">Home</a> |
+                <a href="#" class="footer-link">Contact</a> |
+                <a href="#" class="footer-link">Security</a>
+            </p>
+            <div class="mt-1 social-icons">
+                <a href="#" class="text-white" title="Facebook"><i class="fab fa-facebook-square social-icon"></i></a>
+                <a href="#" class="text-white ml-1" title="Twitter"><i class="fab fa-twitter-square social-icon"></i></a>
+                <a href="#" class="text-white ml-1" title="Instagram"><i class="fab fa-instagram-square social-icon"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,159 @@
+{% load static %}
+
+{% block css %}
+<style>
+    #language-select {
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 120px;
+    cursor: pointer;
+}
+
+#language-select option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+}
+
+#language-select option:checked {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.navbar {
+    margin-top: -40px;
+
+}
+
+.nav-item{
+    color: #000;
+}
+
+
+.form-control:focus {
+        border-color: black !important;
+        box-shadow: none; /* Optionally, you can remove the box-shadow */
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    margin: 5px 0;
+}
+
+</style>
+{% endblock %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <img width="5%" src="{% static 'images/logo.png' %}"><a class="navbar-brand" href="/">𝑴𝒊𝒄𝒓𝒐𝒏</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Orders</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><p class="dropdown-item">All Categories</p></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                {% for category in all_categories %}
+                                <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name|capfirst }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% if user.is_authenticated %}
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'images/users/avatar.png' %}  {% endif %}" alt="mdo" width="24" height="24" class="rounded-circle"></a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><p class="dropdown-item">{{ user }}'s Profile</p></li>
+                                <li><hr class="dropdown-divider"/></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Profile</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Favourite Products</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}">Change Password</a></li>
+                                <form method="POST" action="{% url 'user_account:logout' %}">
+                                    {% csrf_token %}
+                                <li class="nav-item nav-link active" aria-current="page"><button type="submit" style="border: none; margin: 0; background: none; cursor: pointer;">Logout</button></li>
+                                </form>
+                                {% if user.is_superuser or user.is_staff %}
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_account:login' %}"><i class="fa-solid fa-user"></i></a></li>
+                        {% endif %}
+                         <li class="nav-item">
+                        <form class="nav-link" action="" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="">
+                        <select id="language-select" name="language">
+                            <option value=>
+                                English
+                            </option>
+                            <option value=>
+                                Ukraine
+                            </option>
+                        </select>
+                         </form>
+                        </li>
+                    </ul>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <form class="d-flex" id="searchform" action="{% url 'products:products' %}" method="get">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="cursor: pointer;" onclick="document.getElementById('searchform').submit();">
+                                    <span class="input-group-text">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </span>
+                                </div>
+                                <input class="form-control me-sm-2" type="search" name="search_query" value="{{ search_query }}" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+                    <form action="{% url 'cart:cart_summary' %}" method="POST" class="d-flex">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">
+                                {% with qty_amount=cart|length %}
+
+                                {% if qty_amount > 0 %}
+
+                                    {{ qty_amount }}
+
+                                    {% else %}
+
+                                        0
+
+                                    {% endif %}
+
+                        {% endwith %}</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+</nav>
+<body>
+    <div class="container">
+        {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h6 id="message-timer" class="alert alert-success text-center"><i class="fa fa-sign-out" aria-hidden="true"></i> &nbsp; {{ message }}</h6>
+        {% endif %}
+
+         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+
+            <h6 id="message-timer" class="alert alert-danger text-center"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  &nbsp; {{ message }}</h6>
+
+        {% endif %}
+
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+
+            <h6 id="message-timer" class="alert alert-info text-center"><i class="fa fa-check-circle" aria-hidden="true"></i>  &nbsp; {{ message }}</h6>
+        {% endif %}
+
+    {% endfor %}
+    </div>
+</body>
+
+<script src="{% static 'js/app.js' %}"></script>
