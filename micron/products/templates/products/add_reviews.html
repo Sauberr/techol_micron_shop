@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static crispy_forms_tags %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <br>
+  <br>
+  <h2>{% trans 'Add Review for' %} {{ product.name }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.stars|as_crispy_field }}
+    {{ form.text|as_crispy_field }}
+    <button type="submit" class="btn btn-secondary"> {% trans 'Send' %} </button>
+  </form>
+</div>
+{% endblock %}

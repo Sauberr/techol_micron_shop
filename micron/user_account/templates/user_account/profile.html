@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<style>
+    .profile-image {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+    }
+    .profile-title {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .profile-form .form-group {
+        margin-bottom: 15px;
+    }
+    .profile-buttons {
+        margin-top: 20px;
+    }
+    .profile-buttons .btn {
+        margin-bottom: 10px;
+    }
+      .underline {
+            border-bottom: 1px solid #dee2e6; /* Adjust the color as needed */
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+}
+</style>
+{% endblock %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <img src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'images/users/default_avatar.jpg' %}  {% endif %}" alt="Profile Image" class="profile-image">
+            <h4 class="profile-title underline">{{ user }}'s Profile</h4>
+            <div class="profile-buttons">
+                <a href="{% url 'user_account:delete_account' %}" class="btn btn-danger btn-block"> <i class="fas fa-trash icon-trash"></i> Delete account</a>
+                <a href="{% url 'user_account:profile_management' %}" class="btn btn-primary btn-block"> <i class="fa-solid fa-user" style="color: #ffffff;"></i> Update profile management</a>
+                <a href="{% url 'user_account:manage_shipping' %}" class="btn btn-primary btn-block"> <i class="fa-solid fa-clipboard" style="color: #ffffff;"></i> Manage Shipping</a>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <form action="{% url 'user_account:profile'  %}" method="POST" class="profile-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="small mb-1" for="{{ form.first_name.id_for_label }}">First name</label>
+              {{ form.first_name }}
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="small mb-1" for="{{ form.last_name.id_for_label }}">Last name</label>
+              {{ form.last_name }}
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-2">
+          <div class="col-lg-12">
+             <div class="custom-file">
+               <br>
+               {{ form.image }}
+               <label class="custom-file-label" for="{{ form.image.id_for_label }}"></label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label class="small mb-1" for="{{ form.username.id_for_label }}">Username</label>
+              {{ form.username }}
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-lg-12">
+            <label class="small mb-1" for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-lg-12 text-center" style="margin-top: 12px;">
+            <button type="submit" id="add-button" class="btn btn-secondary btn-block">Save</button>
+          </div>
+        </div>
+      </form>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

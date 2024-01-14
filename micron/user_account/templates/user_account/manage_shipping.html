@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+
+{% block title %}
+ {{ title }}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/manage-shipping.css' %}">
+<style>
+    .form-layout {
+        padding: 2rem;
+        border-radius: 15px;
+    }
+    .form-layout h3 {
+        margin-bottom: 1rem;
+    }
+    .form-layout p {
+        margin-bottom: 1rem;
+    }
+    .form-layout hr {
+        margin-bottom: 2rem;
+    }
+    .form-layout .btn {
+        padding: 1rem;
+    }
+          .underline {
+            border-bottom: 1px solid #dee2e6; /* Adjust the color as needed */
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="form-layout bg-white shadow-md">
+        <h3 class="text-center underline">Manage shipping</h3>
+        <p>Please fill your shipping address.</p>
+        <hr>
+        <form method="post" action="" autocomplete="off">
+            {% csrf_token %}
+            {{ form.first_name|as_crispy_field }}
+            {{ form.last_name|as_crispy_field }}
+            {{ form.email|as_crispy_field }}
+            {{ form.address|as_crispy_field }}
+            {{ form.postal_code|as_crispy_field }}
+            {{ form.city|as_crispy_field }}
+            <button type="submit" class="btn btn-secondary btn-lg w-100">Update shipping address</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
