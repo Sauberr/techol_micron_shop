@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load static humanize %}
+{% load i18n %}
+{% load static humanize cache %}
 
 
 {% block css %}
@@ -29,29 +30,32 @@
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
                 <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <img class="d-block img-fluid" src="{% static 'images/ipad.jpg' %}" alt="First slide">
-                    <div class="carousel-caption">
-                        <h2>Ipad</h2>
-                        <!-- Add additional text or content here -->
-                    </div>
+                    <a href="{% url 'products:product_detail' product_slug='ipad-10' %}">
+                       <img class="d-block img-fluid" src="{% static 'images/ipad.jpg' %}" alt="First slide">
+                        <div class="carousel-caption">
+                            <h2>{% trans 'Ipad' %}</h2>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <img class="d-block img-fluid" src="{% static 'images/iphone.jpg' %}" alt="Second slide">
-                    <div class="carousel-caption">
-                        <h2>Iphone 15</h2>
-                        <!-- Add additional text or content here -->
-                    </div>
+                    <a href="{% url 'products:product_detail' product_slug='iphone-15' %}">
+                        <img class="d-block img-fluid" src="{% static 'images/iphone.jpg' %}" alt="Second slide">
+                        <div class="carousel-caption">
+                            <h2>{% trans 'Iphone 15' %}</h2>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <img class="d-block img-fluid" src="{% static 'images/imac.jpg' %}" alt="Third slide">
-                    <div class="carousel-caption">
-                        <h2>Mac</h2>
-                        <!-- Add additional text or content here -->
-                    </div>
+                    <a href="{% url 'products:product_detail' product_slug='macbook-air-13' %}">
+                        <img class="d-block img-fluid" src="{% static 'images/imac.jpg' %}" alt="Third slide">
+                        <div class="carousel-caption">
+                            <h2>{% trans 'Mac' %}</h2>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -68,51 +72,69 @@
 <section class="py-0">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            {% for product in products %}
-                {% if product.discount == True %}
-                <div class="col mb-5">
+            {% cache 3 in products %}
+                {% for product in products %}
+                    {% if product.discount == True %}
+                    <div class="col mb-5">
+                            <div class="card h-100">
+                                <!-- Sale badge-->
+                                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">{% trans 'Sale' %}</div>
+                                <!-- Product image-->
+                                <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="250"/><a/>
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <a class="text-decoration-none title" href="{{ product.get_absolute_url }}"><h5 class="fw-bolder">{{ product.name|capfirst }}</h5></a>
+                                        <!-- Product reviews-->
+                                        <!-- Product price-->
+                                        <span class="text-muted text-decoration-line-through">${{ product.price|intcomma }}</span>
+                                        ${{ product.price_with_discount|intcomma }}
+                                        <br>
+                                        <br>
+                                         <form action="{% url 'products:add_to_favorites' product.id %}" method="post">
+                                        {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ product.get_absolute_url }}">{% trans 'More detail' %}</a></div>
+                                </div>
+                            </div>
+                    </div>
+                    {% else %}
+                    <div class="col mb-5">
                         <div class="card h-100">
-                            <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="250"/><a/>
+                            <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="250"/></a>
+                            <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
                                     <a class="text-decoration-none title" href="{{ product.get_absolute_url }}"><h5 class="fw-bolder">{{ product.name|capfirst }}</h5></a>
-                                    <!-- Product reviews-->
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">${{ product.price|intcomma }}</span>
-                                    ${{ product.price_with_discount|intcomma }}
+                                    ${{ product.price|intcomma }}
+                                    <br>
+                                        <br>
+                                         <form action="{% url 'products:add_to_favorites' product.id %}" method="post">
+                                        {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                        </form>
                                 </div>
                             </div>
-                            <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ product.get_absolute_url }}">More detail</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ product.get_absolute_url }}">{% trans 'More detail' %}</a></div>
                             </div>
-                        </div>
-                </div>
-                {% else %}
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="250"/></a>
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <a class="text-decoration-none title" href="{{ product.get_absolute_url }}"><h5 class="fw-bolder">{{ product.name|capfirst }}</h5></a>
-                                <!-- Product price-->
-                                ${{ product.price|intcomma }}
-                            </div>
-                        </div>
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ product.get_absolute_url }}">More detail</a></div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endcache %}
         </div>
     </div>
 </section>

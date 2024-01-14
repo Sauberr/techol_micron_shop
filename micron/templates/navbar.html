@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 
 {% block css %}
@@ -46,14 +47,14 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <img width="5%" src="{% static 'images/logo.png' %}"><a class="navbar-brand" href="/">𝑴𝒊𝒄𝒓𝒐𝒏</a>
+                <img width="5%" src="{% static 'images/logo.png' %}"><a class="navbar-brand" href="/">{% trans '𝑴𝒊𝒄𝒓𝒐𝒏' %}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Orders</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">{% trans 'Products' %}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'orders:orders' %}">{% trans 'Orders' %}</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Categories' %}</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><p class="dropdown-item">All Categories</p></li>
                                 <li><hr class="dropdown-divider" /></li>
@@ -68,34 +69,35 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><p class="dropdown-item">{{ user }}'s Profile</p></li>
                                 <li><hr class="dropdown-divider"/></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Profile</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Favourite Products</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}">Change Password</a></li>
-                                <form method="POST" action="{% url 'user_account:logout' %}">
-                                    {% csrf_token %}
-                                <li class="nav-item nav-link active" aria-current="page"><button type="submit" style="border: none; margin: 0; background: none; cursor: pointer;">Logout</button></li>
-                                </form>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:profile' %}">{% trans 'Profile' %}</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'products:favorite_products' %}">{% trans 'Favourite Products' %}</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}">{% trans 'Change Password' %}</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:logout' %}">{% trans 'Logout' %}</a></li>
                                 {% if user.is_superuser or user.is_staff %}
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">{% trans 'Admin Panel' %}</a></li>
                                 {% endif %}
                             </ul>
                         </li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'user_account:login' %}"><i class="fa-solid fa-user"></i></a></li>
                         {% endif %}
-                         <li class="nav-item">
-                        <form class="nav-link" action="" method="post" class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="next" value="">
-                        <select id="language-select" name="language">
-                            <option value=>
-                                English
-                            </option>
-                            <option value=>
-                                Ukraine
-                            </option>
-                        </select>
-                         </form>
+                        <li class="nav-item">
+                            <div class="d-flex align-items-center">
+                                <form action="{% url 'set_language' %}" method="post" class="nav-link d-inline">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                    <select name="language" id="language-select" onchange="this.form.submit()">
+                                        {% get_current_language as LANGUAGE_CODE %}
+                                        {% get_available_languages as LANGUAGES %}
+                                        {% get_language_info_list for LANGUAGES as languages %}
+                                        {% for language in languages %}
+                                            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                                                {{ language.name_local }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </div>
                         </li>
                     </ul>
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -114,7 +116,7 @@
                         {% csrf_token %}
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
-                            Cart
+                            {% trans 'Cart' %}
                             <span class="badge bg-dark text-white ms-1 rounded-pill">
                                 {% with qty_amount=cart|length %}
 
@@ -157,3 +159,9 @@
 </body>
 
 <script src="{% static 'js/app.js' %}"></script>
+
+<script>
+window.onbeforeunload = function() {
+    navigator.sendBeacon('/decrement-counter/');
+};
+</script>

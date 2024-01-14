@@ -1,19 +1,44 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path
-from user_account.views import UserLoginView, UserRegistrationView, ResetPasswordView, ChangePasswordView
-from django.contrib.auth import views as auth_views
 
-app_name = 'user_account'
+from user_account.views import (
+    ChangePasswordView,
+    EmailVerificationView,
+    ResetPasswordView,
+    UserLoginView,
+    UserRegistrationView,
+    profile,
+    delete_account,
+    profile_management,
+    manage_shipping,
+    logout
+)
+
+app_name = "user_account"
 
 urlpatterns = [
     # Login page
-    path('login/', UserLoginView.as_view(), name='login'),
+    path("login/", UserLoginView.as_view(), name="login"),
     # Logout page
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path("logout/", logout, name="logout"),
+    # Profile page
+    path('profile/', profile, name='profile'),
+    # Delete account page
+    path('delete-account/', delete_account, name='delete_account'),
     # Registration page
-    path('registration/', UserRegistrationView.as_view(), name='registration'),
+    path("registration/", UserRegistrationView.as_view(), name="registration"),
     # Password reset page
-    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path("password-reset/", ResetPasswordView.as_view(), name="password_reset"),
+    # Profile management page
+    path("profile-management/", profile_management, name="profile_management"),
+    # Manage shipping page
+    path("manage-shipping/", manage_shipping, name="manage_shipping"),
     # Password change page
-    path('password-change/', login_required(ChangePasswordView.as_view()), name='password_change'),
+    path(
+        "password-change/", login_required(ChangePasswordView.as_view()), name="password_change",
+    ),
+    # Email verification page
+    path(
+        "verify/<str:email>/<uuid:code>/", EmailVerificationView.as_view(), name="email_verification",
+    ),
 ]
