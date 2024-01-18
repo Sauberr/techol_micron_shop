@@ -25,6 +25,7 @@ DOMAIN_NAME = 'http://localhost:8000'
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -326,4 +327,15 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+# Jazzmin settings
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Micron Admin",
+    "site_header": "Micron",
+    "site_brand": "Shopping made easy....",
+    "site_logo": "images/logo.png",
+    "copyright": "Micron - All Right Reserved @ Copyright 2024 - Till Date",
+    "order_with_respect_to": ["products", "user_account", "payment", "coupons", "orders", "cart", "api"]
 }
