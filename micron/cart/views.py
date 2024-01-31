@@ -19,7 +19,7 @@ def cart_summary(request):
 
 
 @require_POST
-def cart_add(request, product_id):
+def cart_add(request, product_id: int):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     form = CartAddProductForm(request.POST)
@@ -32,7 +32,7 @@ def cart_add(request, product_id):
 
 
 @require_POST
-def cart_remove(request, product_id):
+def cart_remove(request, product_id: int):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)

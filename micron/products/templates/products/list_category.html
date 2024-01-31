@@ -46,7 +46,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">{% trans 'Sale' %}</div>
                             <!-- Product image-->
-                            <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="200"/><a/>
+                            <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="650" height="350"/><a/>
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
@@ -67,7 +67,7 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="635" height="200"/></a>
+                        <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" width="650" height="350"/></a>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -90,7 +90,7 @@
         {% endfor %}
 
       </div>
-      <a href="{% url 'products:products' %}"><button type="button" class="btn btn-secondary"><i class="fa fa-sign-out" aria-hidden="true"></i> Back</button></a>
+      <a href="{% url 'products:products' %}"><button type="button" class="btn btn-dark"><i class="fa fa-sign-out" aria-hidden="true"></i> Back</button></a>
     </div>
   </div>
 
@@ -98,6 +98,7 @@
 
 
 </main>
+<hr>
 
         {% block footer %}
 

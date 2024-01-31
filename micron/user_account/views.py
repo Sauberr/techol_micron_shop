@@ -7,7 +7,7 @@ from django.views.generic import CreateView, TemplateView
 
 from common.views import TitleMixin
 from user_account.forms import PasswordChangingForm, UserLoginForm, UserRegistrationForm, UserProfileForm, \
-    UserUpdateForm
+    UserUpdateForm, ContactForm
 from user_account.models import EmailVerification, User
 from django.contrib import auth, messages
 from orders.models import Order
@@ -151,3 +151,17 @@ def logout(request):
     messages.success(request, 'Logout Success')
     auth.logout(request)
     return redirect('products:products')
+
+
+def contact(request):
+    form = ContactForm()
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message was successfully sent')
+            return redirect('products:products')
+        else:
+            messages.error(request, 'Please correct the error below')
+    context = {'title': 'Contact US', 'form': form}
+    return render(request, 'user_account/contact.html', context)

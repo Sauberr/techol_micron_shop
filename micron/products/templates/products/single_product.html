@@ -31,12 +31,18 @@
                         <div class="fs-5 mb-5">
                             <span>${{ product.price_with_discount|intcomma }}</span>
                         </div>
+                        <h6>
                          {% if average_stars %}
-                        <p>{% trans 'Average Stars' %}: {{ average_stars }} <i class="fas fa-star" style="color: yellow;"></i></p>
+                             {% for i in "x"|rjust:average_stars %}
+                                 <i class="fa-solid fa-star" style="color: #ffa800;"></i>
+                            {% endfor %}
+                            {% with reviews.count as total_reviews %} {{ total_reviews }} review{{ total_reviews|pluralize }} {% endwith %}
+                        </h6>
                         {% else %}
-                        <p>{% trans 'No reviews yet' %}.</p>
-                         {% endif %}
-                        <p class="lead">{{ product.description }}</p>
+                        <h6>{% trans 'No reviews yet' %}.</h6>
+                        {% endif %}
+                        </h6>
+                        <h6 class="lead">{{ product.description }}</h6>
                         <div class="d-flex">
                             <form class="text-center" id="inputQuantity" type="num" value="1" style="max-width: 3rem"  action="{% url 'cart:cart_add' product.id %}" method='post'>
                                 {{ cart_product_form }}
@@ -55,12 +61,17 @@
                         <div class="fs-5 mb-5">
                             <span class="">${{ product.price|intcomma }}</span>
                         </div>
+                        <h6>
                         {% if average_stars %}
-                        <p>Average Stars: {{ average_stars }} <i class="fas fa-star" style="color: yellow;"></i></p>
+                             {% for i in "x"|rjust:average_stars %}
+                                 <i class="fa-solid fa-star" style="color: #ffa800;"></i>
+                            {% endfor %}
+                            {% with reviews.count as total_reviews %} {{ total_reviews }} review{{ total_reviews|pluralize }} {% endwith %}
+                        </h6>
                         {% else %}
-                        <p>No reviews yet.</p>
+                        <h6>No reviews yet.</h6>
                          {% endif %}
-                        <p class="lead">{{ product.description }}</p>
+                        <h6 class="lead">{{ product.description }}</h6>
                         <div class="d-flex">
                             <form class="text-center" id="inputQuantity" type="num" value="1" style="max-width: 3rem"  action="{% url 'cart:cart_add' product.id %}" method='post'>
                                 {{ cart_product_form }}
@@ -73,7 +84,7 @@
                     </div>
                 </div>
                 {% endif %}
-            <section class="reviews-section">
+<section class="reviews-section">
     {% if user.is_authenticated %}
                 <br>
         <a href="{% url 'products:add_review' product.id %}">
@@ -86,9 +97,6 @@
 
     <h4 class="mt-4 mb-3">{% trans 'All Reviews' %}</h4>
     <hr class="mb-4">
-    {% with reviews.count as total_reviews %}
-     <p> {{ total_reviews }} review{{ total_reviews|pluralize }}</p>
-    {% endwith %}
     <div class="row">
         {% if reviews %}
             {% for review in reviews %}
@@ -97,13 +105,14 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ review.product.name }}</h5>
                             <p class="card-text">
-                                {{ review.stars }}
-                                <i class="fas fa-star" style="color: yellow;"></i>
-                            </p>
-                            <p class="card-text">
+                                {% for i in 'x'|rjust:average_stars %}
+                                    <i class="fa-solid fa-star" style="color: #ffa800;"></i>
+                                {% endfor %}
+
+                            <h6 class="card-text">
                                 <strong>{{ review.user }}:</strong>
-                            </p>
-                            <p class="card-text">{{ review.text }}</p>
+                            </h6>
+                            <h6 class="card-text">{{ review.text }}</h6>
 
                              {% if user == review.user %}
                                 <a href="{% url 'products:delete_review' review.id %}" class="btn btn-outline-danger">{% trans 'Delete' %}</a>
@@ -112,14 +121,14 @@
 
                             <p class="card-text">
                                 <small class="text-muted">{{ review.created_at }}</small>
-                            </p>
+                            </h6>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
             <div class="col-md-12">
-                <p>{% trans 'No reviews yet.' %}</p>
+                <h6>{% trans 'No reviews yet.' %}</h6>
             </div>
         {% endif %}
     </div>

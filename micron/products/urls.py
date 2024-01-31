@@ -1,11 +1,12 @@
 from django.urls import path
 
-from products.views import list_category, product_detail, products, add_to_favorite, delete_from_favorites, favorite_products, add_review, delete_review, update_review
+from products.views import list_category, product_detail, products, add_to_favorite, delete_from_favorites, favorite_products, add_review, delete_review, update_review, index
 app_name = 'products'
 
 urlpatterns = [
     # Main page
-    path('', products, name='products'),
+    path('', index, name='index'),
+    path('products/', products, name='products'),
     # Detail product page
     path('product-detail/<slug:product_slug>/', product_detail, name='product_detail'),
     # Individual category

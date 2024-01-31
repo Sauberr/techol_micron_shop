@@ -3,12 +3,6 @@
 {% load static humanize cache %}
 
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/products.css' %}">
-{% endblock %}
-
-
-
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
@@ -20,56 +14,43 @@
 {% endblock %}
 
 
-<header class="py-0 container px-4 px-lg-5 mt-3">
-    <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-                <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <a href="{% url 'products:product_detail' product_slug='ipad-10' %}">
-                       <img class="d-block img-fluid" src="{% static 'images/ipad.jpg' %}" alt="First slide">
-                        <div class="carousel-caption">
-                            <h2>{% trans 'Ipad' %}</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <a href="{% url 'products:product_detail' product_slug='iphone-15' %}">
-                        <img class="d-block img-fluid" src="{% static 'images/iphone.jpg' %}" alt="Second slide">
-                        <div class="carousel-caption">
-                            <h2>{% trans 'Iphone 15' %}</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="d-flex align-items-center justify-content-center h-50 w-70">
-                    <a href="{% url 'products:product_detail' product_slug='macbook-air-13' %}">
-                        <img class="d-block img-fluid" src="{% static 'images/imac.jpg' %}" alt="Third slide">
-                        <div class="carousel-caption">
-                            <h2>{% trans 'Mac' %}</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
+{% block search %}
+
+{% include 'search.html' %}
+
+{% endblock %}
+
+<section class="py-5">
+<div class="container px-4 px-lg-5 mt-5">
+<div class="container mt-3">
+    <form method="get" class="d-flex justify-content-end align-items-end p-3">
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="discount" class="mr-2">Discount:</label>
+            <select name="discount" id="discount" class="form-control mr-2">
+                <option value="">All</option>
+                <option value="true">Discounted</option>
+                <option value="false">Not discounted</option>
+            </select>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</header>
-<section class="py-0">
+
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="order" class="mr-2">Order by:</label>
+            <select name="order" id="order" class="form-control mr-2">
+                <option value="">None</option>
+                <option value="price">Price (Low to High)</option>
+                <option value="-price">Price (High to Low)</option>
+                <option value="date">New to Old</option>
+                <option value="-date">Old to New</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary d-flex align-items-center py-2 px-3">
+                 <i class="fas fa-filter mr-2"></i>  Filter
+            </button>
+        </div>
+    </form>
+</div>
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             {% cache 3 in products %}
@@ -94,7 +75,7 @@
                                          <form action="{% url 'products:add_to_favorites' product.id %}" method="post">
                                         {% csrf_token %}
                                             <button type="submit" class="btn btn-outline-danger">
-                                                <i class="fas fa-heart"></i>
+                                                <i class="fa-solid fa-heart fa-beat"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -122,7 +103,7 @@
                                          <form action="{% url 'products:add_to_favorites' product.id %}" method="post">
                                         {% csrf_token %}
                                             <button type="submit" class="btn btn-outline-danger">
-                                                <i class="fas fa-heart"></i>
+                                                <i class="fa-solid fa-heart fa-beat"></i>
                                             </button>
                                         </form>
                                 </div>
@@ -137,7 +118,6 @@
             {% endcache %}
         </div>
     </div>
-</section>
 
 
         {% block pagination %}
@@ -145,13 +125,16 @@
         {% include 'pagination.html' with queryset=products custom_range=custom_range %}
 
         {% endblock %}
+</section>
 
+<hr>
 
         {% block footer %}
 
             {% include 'footer.html' %}
 
         {% endblock %}
+
 
 
 {% endblock %}

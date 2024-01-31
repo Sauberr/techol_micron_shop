@@ -6,8 +6,9 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from orders.models import Order
 
+
 @shared_task
-def payment_completed(order_id):
+def payment_completed(order_id: int):
     '''
     Task to send an e-mail notification when an order is
     successfully paid.

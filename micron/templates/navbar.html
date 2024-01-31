@@ -1,88 +1,87 @@
 {% load i18n %}
 {% load static %}
 
-{% block css %}
+{% block search %}
+
+{% include 'search.html' %}
+
+{% endblock %}
+
 <style>
-    #language-select {
+    .user-profile {
+    font-size: 14px;
+}
+
+.dropdown-menu a {
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 120px;
-    cursor: pointer;
 }
 
-#language-select option {
-    padding: 10px;
-    background-color: #fff;
-    color: #333;
+.dropdown-toggle::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    margin-left: 0.255em;
+    margin-top: -0.6em;
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+    transition: transform 0.2s ease-in-out;
 }
 
-#language-select option:checked {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.navbar {
-    margin-top: -40px;
-
-}
-
-.nav-item{
-    color: #000;
-}
-
-
-.form-control:focus {
-        border-color: black !important;
-        box-shadow: none; /* Optionally, you can remove the box-shadow */
-}
-
-.dropdown-divider {
-    border-top: 1px solid rgba(0, 0, 0, 0.5);
-    margin: 5px 0;
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
 }
 
 </style>
-{% endblock %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <img width="5%" src="{% static 'images/logo.png' %}"><a class="navbar-brand" href="/">{% trans '𝑴𝒊𝒄𝒓𝒐𝒏' %}</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">{% trans 'Products' %}</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'orders:orders' %}">{% trans 'Orders' %}</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Categories' %}</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><p class="dropdown-item">All Categories</p></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                {% for category in all_categories %}
-                                <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name|capfirst }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        {% if user.is_authenticated %}
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% if user.image %} {{ user.image.url }} {% else %} {% static 'images/users/avatar.png' %}  {% endif %}" alt="mdo" width="24" height="24" class="rounded-circle"></a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><p class="dropdown-item">{{ user }}'s Profile</p></li>
-                                <li><hr class="dropdown-divider"/></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:profile' %}">{% trans 'Profile' %}</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'products:favorite_products' %}">{% trans 'Favourite Products' %}</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}">{% trans 'Change Password' %}</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:logout' %}">{% trans 'Logout' %}</a></li>
-                                {% if user.is_superuser or user.is_staff %}
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}">{% trans 'Admin Panel' %}</a></li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'user_account:login' %}"><i class="fa-solid fa-user"></i></a></li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <div class="d-flex align-items-center">
+
+<header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
+      <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">
+            <img src="{% static 'test/images/micron-lg.png' %}" style="width: 143px; height: 48px;" class="logo">
+          </a>
+          <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <svg class="navbar-icon">
+              <use xlink:href="#navbar-icon"></use>
+            </svg>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
+            <div class="offcanvas-header px-4 pb-0">
+              <a class="navbar-brand" href="index.html">
+                <img src="{% static 'test/images/main-logo.png' %}" class="logo">
+              </a>
+              <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link me-4 active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link me-4" href="{% url 'products:products' %}">Products</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link me-4" href="{% url 'orders:orders' %}">Orders</a>
+                </li>
+                  <li class="nav-item">
+                  <a class="nav-link me-4" href="{% url 'user_account:contact' %}">Contact</a>
+                </li>
+                 <li class="nav-item dropdown">
+                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="" role="button" aria-expanded="false">Categories</a>
+                  <ul class="dropdown-menu">
+                    {% for category in all_categories %}
+                    <li>
+                      <a href="{{ category.get_absolute_url }}" class="dropdown-item">{{ category.name|capfirst }}</a>
+                    </li>
+                  {% endfor %}
+                 </ul>
+                 </li>
+                <li class="nav-item">
+                   <div class="d-flex align-items-center">
                                 <form action="{% url 'set_language' %}" method="post" class="nav-link d-inline">
                                     {% csrf_token %}
                                     <input name="next" type="hidden" value="{{ request.get_full_path }}">
@@ -98,46 +97,82 @@
                                     </select>
                                 </form>
                             </div>
-                        </li>
-                    </ul>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <form class="d-flex" id="searchform" action="{% url 'products:products' %}" method="get">
-                            <div class="input-group">
-                                <div class="input-group-prepend" style="cursor: pointer;" onclick="document.getElementById('searchform').submit();">
-                                    <span class="input-group-text">
-                                        <i class="fa-solid fa-magnifying-glass"></i>
-                                    </span>
-                                </div>
-                                <input class="form-control me-sm-2" type="search" name="search_query" value="{{ search_query }}" placeholder="Search">
-                            </div>
-                        </form>
-                    </div>
-                    <form action="{% url 'cart:cart_summary' %}" method="POST" class="d-flex">
-                        {% csrf_token %}
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            {% trans 'Cart' %}
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">
-                                {% with qty_amount=cart|length %}
-
-                                {% if qty_amount > 0 %}
-
-                                    {{ qty_amount }}
-
-                                    {% else %}
-
-                                        0
-
+                </li>
+                <li class="nav-item">
+                  <div class="user-items ps-5">
+                    <ul class="d-flex justify-content-end list-unstyled">
+                       <li class="pe-3">
+                        {% if user.is_authenticated %}
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg class="user">
+                                        <use xlink:href="#user"></use>
+                                    </svg>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><p class="dropdown-item user-profile">{{ user }}'s Profile</p></li>
+                                    <li><hr class="dropdown-divider"/></li>
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:profile' %}"><i class="fa-solid fa-user"></i> {% trans 'Profile' %}</a></li>
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'products:favorite_products' %}"> <i class="fa-solid fa-heart"></i> {% trans 'Favourite Products' %}</a></li>
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}"><i class="fa-solid fa-unlock"></i> {% trans 'Change Password' %}</a></li>
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i> {% trans 'Logout' %}</a></li>
+                                    {% if user.is_superuser or user.is_staff %}
+                                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'admin:index' %}"><i class="fa-solid fa-user-tie"></i> {% trans 'Admin Panel' %}</a></li>
                                     {% endif %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'user_account:login' %}">
+                                <svg class="user">
+                                    <use xlink:href="#user"></use>
+                                </svg>
+                            </a>
+                        {% endif %}
+                      </li>
+                      <li class="search-item pe-3">
+                        <a href="#" class="search-button">
+                          <svg class="search">
+                            <use xlink:href="#search"></use>
+                          </svg>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'cart:cart_summary' %}">
+                          <svg class="cart">
+                            <use xlink:href="#cart"></use>
+                             <form action="{% url 'cart:cart_summary' %}" method="POST" class="d-flex">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-dark" type="submit">
+                                  <span class="badge bg-dark text-white ms-1 rounded-pill">
+                                        {% with qty_amount=cart|length %}
 
-                        {% endwith %}</span>
-                        </button>
-                    </form>
-                </div>
+                                        {% if qty_amount > 0 %}
+
+                                            {{ qty_amount }}
+
+                                            {% else %}
+
+                                                0
+
+                                            {% endif %}
+
+                                {% endwith %}</span>
+                                </button>
+                            </form>
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
             </div>
-</nav>
+          </div>
+        </div>
+      </nav>
+    </header>
 <body>
-    <div class="container">
+    <div class="container" style="padding-top: 90px;">
         {% for message in messages %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
             <h6 id="message-timer" class="alert alert-success text-center"><i class="fa fa-sign-out" aria-hidden="true"></i> &nbsp; {{ message }}</h6>

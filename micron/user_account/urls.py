@@ -11,7 +11,8 @@ from user_account.views import (
     delete_account,
     profile_management,
     manage_shipping,
-    logout
+    logout,
+    contact,
 )
 
 app_name = "user_account"
@@ -41,4 +42,6 @@ urlpatterns = [
     path(
         "verify/<str:email>/<uuid:code>/", EmailVerificationView.as_view(), name="email_verification",
     ),
+    # Contact
+    path("contact/", contact, name="contact"),
 ]

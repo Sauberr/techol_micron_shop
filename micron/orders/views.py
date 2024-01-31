@@ -10,8 +10,10 @@ from .tasks import order_created
 from django.urls import reverse
 from django.contrib.admin.views.decorators import staff_member_required
 import weasyprint
+from django.contrib.auth.decorators import login_required
 
 
+login_required(login_url='/accounts/login/')
 def order_create(request):
     cart = Cart(request)
 
@@ -48,14 +50,15 @@ def order_create(request):
     return render(request, 'orders/order/create.html', {'cart': cart, 'form': form})
 
 
+login_required(login_url='/accounts/login/')
 @staff_member_required
-def admin_order_detail(request, order_id):
+def admin_order_detail(request, order_id: int):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'admin/orders/order/detail.html', {'order': order})
 
-
+login_required(login_url='/accounts/login/')
 @staff_member_required
-def admin_order_pdf(request, order_id):
+def admin_order_pdf(request, order_id: int):
     order = get_object_or_404(Order, id=order_id)
     html = render_to_string('orders/order/pdf.html', {'order': order})
     response = HttpResponse(content_type='application/pdf')
@@ -65,18 +68,21 @@ def admin_order_pdf(request, order_id):
     return response
 
 
+login_required(login_url='/accounts/login/')
 def orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created')
-    return render(request, 'orders/order/orders.html', {'orders': orders})
+    return render(request, 'orders/order/orders.html', {'orders': orders, 'title': 'Orders'})
 
 
-def delete_order(request, order_id):
+login_required(login_url='/accounts/login/')
+def delete_order(request, order_id: int):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
     return redirect('orders:orders')
 
 
-def detail_order(request, order_id):
+login_required(login_url='/accounts/login/')
+def detail_order(request, order_id: int):
     order = get_object_or_404(Order, id=order_id)
     detail_order = OrderItem.objects.filter(user=request.user, order=order)
     return render(request, 'orders/order/detail_order.html', {'detail_order': detail_order, 'order': order})

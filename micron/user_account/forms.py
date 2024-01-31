@@ -6,7 +6,8 @@ from django.contrib.auth.forms import (
     UserCreationForm, UserChangeForm,
 )
 from user_account.tasks import send_email_verification
-from user_account.models import User
+from user_account.models import User, Contact
+
 
 
 class UserLoginForm(AuthenticationForm):
@@ -76,6 +77,28 @@ class UserUpdateForm(forms.ModelForm):
         if len(data) >= 350:
             raise forms.ValidationError("Your email is too long")
         return data
+
+
+class ContactForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter your name"}
+        )
+    )
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter your email"}
+        )
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(
+            attrs={"class": "form-control py-2", "placeholder": "Enter your message"}
+        )
+    )
+
+    class Meta:
+        model = Contact
+        fields = ('name', 'email', 'message')
 
 
 class UserRegistrationForm(UserCreationForm):

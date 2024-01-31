@@ -3,7 +3,8 @@ import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from orders.models import Order
-
+from django.views.generic.base import TemplateView
+from common.views import TitleMixin
 
 # create an example payment intent
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -54,10 +55,12 @@ def payment_process(request):
         return render(request, 'payment/process.html', locals())
 
 
-def payment_completed(request):
-    return render(request, 'payment/completed.html')
+class SuccessTemplateView(TitleMixin, TemplateView):
+    template_name = 'payment/success.html'
+    title = 'Payment Success'
 
 
-def payment_canceled(request):
-    return render(request, 'payment/canceled.html')
+class CanceledTemplateView(TitleMixin, TemplateView):
+    template_name = 'payment/canceled.html'
+    title = 'Payment Canceled'
 

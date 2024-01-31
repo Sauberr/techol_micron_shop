@@ -1,4 +1,3 @@
-
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -14,11 +13,43 @@ import logging
 
 logger = logging.getLogger('main')
 
+def index(request):
+    products, search_query = searchproducts(request)
+    context = {
+        'title': 'Products',
+        'products': products,
+        'search_query': search_query,
+    }
+    return render(request, 'index.html', context)
+
 
 def products(request):
     logger.info('products')
     products, search_query = searchproducts(request)
-    custom_range, products = paginateprodcuts(request, products, 3)
+
+    # Get selected options
+    discount = request.GET.get('discount')
+    order = request.GET.get('order')
+
+    # Filter products based on selected options
+    if discount in ['true', 'false']:
+        products = products.filter(discount=(discount == 'true'))
+    else:
+        pass
+
+    # Order products based on selected options
+    order_fields = {
+        'price': 'price',
+        '-price': '-price',
+        'date': 'created',
+        '-date': '-created',
+    }
+    if order in order_fields:
+        products = products.order_by(order_fields[order])
+    else:
+        pass
+
+    custom_range, products = paginateprodcuts(request, products, 6)
     context = {
         'title': 'Products',
         'products': products,
@@ -28,7 +59,7 @@ def products(request):
     return render(request, 'products/products.html', context)
 
 
-def product_detail(request, product_slug):
+def product_detail(request, product_slug: str):
     product = get_object_or_404(Product, slug=product_slug, available=True)
     cart_product_form = CartAddProductForm()
     r = Recommender()
@@ -61,7 +92,7 @@ def list_category(request, category_slug=None):
     return render(request, 'products/list_category.html', context)
 
 
-def add_to_favorite(request, product_id):
+def add_to_favorite(request, product_id: int):
     if request.user.is_authenticated:
         try:
             product = Product.objects.get(pk=product_id)
@@ -80,7 +111,7 @@ def favorite_products(request):
         return redirect('user_account:login')
 
 
-def delete_from_favorites(request, product_id):
+def delete_from_favorites(request, product_id: int):
     if request.user.is_authenticated:
         try:
             product = Product.objects.get(pk=product_id)
@@ -90,7 +121,7 @@ def delete_from_favorites(request, product_id):
         return redirect('products:favorite_products')
 
 
-def add_review(request, product_id):
+def add_review(request, product_id: int):
     product = get_object_or_404(Product, id=product_id)
 
     existing_review = Review.objects.filter(user=request.user, product=product).first()
@@ -111,7 +142,7 @@ def add_review(request, product_id):
     return render(request, 'products/add_reviews.html', {'form': form, 'product': product})
 
 
-def delete_review(request, review_id):
+def delete_review(request, review_id: int):
     review = get_object_or_404(Review, id=review_id)
 
     if request.user != review.user:
@@ -123,7 +154,7 @@ def delete_review(request, review_id):
     return redirect('products:product_detail', product_slug=review.product.slug)
 
 
-def update_review(request, review_id):
+def update_review(request, review_id: int):
     review = get_object_or_404(Review, id=review_id)
 
     if request.user != review.user:

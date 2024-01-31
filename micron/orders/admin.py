@@ -56,6 +56,7 @@ def order_pdf(obj):
     return mark_safe(f'<a href="{url}">PDF</a>')
 order_pdf.short_description = "Invoice"
 
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
