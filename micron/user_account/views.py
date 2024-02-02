@@ -4,7 +4,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponseRedirect, reverse, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
-
 from common.views import TitleMixin
 from user_account.forms import PasswordChangingForm, UserLoginForm, UserRegistrationForm, UserProfileForm, \
     UserUpdateForm, ContactForm
@@ -20,6 +19,8 @@ class UserLoginView(TitleMixin, SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
     success_message = "You were successfully logged in"
     title = "Login"
+    success_url = reverse_lazy("products:products")
+
 
     def form_valid(self, form):
         remember_me = form.cleaned_data["remember_me"]

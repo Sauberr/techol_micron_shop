@@ -7,18 +7,16 @@
 
 {% block content %}
 
-{% block header %}
+
 
 {% include 'navbar.html' %}
 
-{% endblock %}
 
 
-{% block search %}
+
 
 {% include 'search.html' %}
 
-{% endblock %}
 
 <section class="py-5">
 <div class="container px-4 px-lg-5 mt-5">
@@ -120,20 +118,19 @@
     </div>
 
 
-        {% block pagination %}
+
 
         {% include 'pagination.html' with queryset=products custom_range=custom_range %}
 
-        {% endblock %}
+
 </section>
 
 <hr>
 
-        {% block footer %}
+
 
             {% include 'footer.html' %}
 
-        {% endblock %}
 
 
 

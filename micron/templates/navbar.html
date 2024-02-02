@@ -1,11 +1,9 @@
 {% load i18n %}
 {% load static %}
 
-{% block search %}
 
 {% include 'search.html' %}
 
-{% endblock %}
 
 <style>
     .user-profile {
@@ -41,7 +39,7 @@
 <header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
       <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
         <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="/">
             <img src="{% static 'test/images/micron-lg.png' %}" style="width: 143px; height: 48px;" class="logo">
           </a>
           <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +49,7 @@
           </button>
           <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
             <div class="offcanvas-header px-4 pb-0">
-              <a class="navbar-brand" href="index.html">
+              <a class="navbar-brand" href="/">
                 <img src="{% static 'test/images/main-logo.png' %}" class="logo">
               </a>
               <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
@@ -59,19 +57,19 @@
             <div class="offcanvas-body">
               <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link me-4 active" href="/">Home</a>
+                  <a {% if request.path == '/en/' %} class="nav-link me-4 active" href="{% url 'products:index' %}"{% else %} class="nav-link me-4" href="{% url 'products:index' %}"{% endif %}>Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="{% url 'products:products' %}">Products</a>
+                  <a {% if 'products/' in request.path %} class="nav-link me-4 active" href="{% url 'products:products' %}">Products {% else %}  class="nav-link me-4" href="{% url 'products:products' %}">Products {% endif %}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="{% url 'orders:orders' %}">Orders</a>
+                    <a {% if 'orders/' in request.path %} class="nav-link me-4 active" href="{% url 'orders:orders' %}">Orders{% else %}  class="nav-link me-4" href="{% url 'orders:orders' %}">Orders {% endif %}</a>
                 </li>
                   <li class="nav-item">
-                  <a class="nav-link me-4" href="{% url 'user_account:contact' %}">Contact</a>
+                  <a {% if 'contact/' in request.path %} class="nav-link me-4 active" href="{% url 'user_account:contact' %}">Contact {% else %}  class="nav-link me-4" href="{% url 'user_account:contact' %}">Contact {% endif %}</a>
                 </li>
                  <li class="nav-item dropdown">
-                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="" role="button" aria-expanded="false">Categories</a>
+                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" role="button" aria-expanded="false">Categories</a>
                   <ul class="dropdown-menu">
                     {% for category in all_categories %}
                     <li>

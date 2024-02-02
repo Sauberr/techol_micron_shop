@@ -9,16 +9,15 @@ from user_account.tasks import send_email_verification
 from user_account.models import User, Contact
 
 
-
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control py-4", "placeholder": "Enter username"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter username or email"}
         )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control py-4", "placeholder": "Enter password"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter password"}
         )
     )
     remember_me = forms.BooleanField(
@@ -82,7 +81,7 @@ class UserUpdateForm(forms.ModelForm):
 class ContactForm(forms.ModelForm):
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter your name"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter your fullname"}
         )
     )
     email = forms.CharField(

@@ -4,23 +4,69 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <style>
-        .contact-form {
-            margin: 0 auto;
-            max-width: 800px;
-            padding: 15px;
-        }
-    </style>
 
-{% block header %}
+{% block css %}
 
-{% include 'navbar.html' %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+<style>
+    .contact-us span {
+    color: #0dcaf0;
+}
+
+h1 span {
+    color: #0d6efd;
+}
+
+.btn:hover {
+    background-color: #0d6efd;
+}
+
+.contact-2 .contact-info-2 .ci-box i {
+    width: 45px;
+    line-height: 50px;
+    margin-right: 5px;
+    font-size: 33px;
+}
+
+.contact-2 .contact-info-2 .ci-box h5 {
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0 0 5px;
+}
+
+.contact-2 .contact-info-2 .ci-box p {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.contact-2 .contact-info-2 .ci-box {
+    margin: 0 0 30px 0;
+    position: relative;
+    width: 100%;
+}
+
+.contact-2 .ci-box .icon {
+    position: absolute;
+}
+
+.contact-2 .ci-box .detail {
+    margin-left: 50px;
+}
+
+</style>
 
 {% endblock %}
 
-<body>
+
+
+{% include 'navbar.html' %}
+
+
+<div class="contact-2 content-area-5">
     <div class="container">
-        {% if messages %}
+         {% if messages %}
             {% for message in messages %}
                 <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
                     {{ message }}
@@ -38,29 +84,86 @@
                 {% endfor %}
             {% endfor %}
         {% endif %}
-        <div class="contact-form">
-            <h1>Contact Us</h1>
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>Contact <span>Us</span></h1>
             <hr>
-            <form action="{% url 'user_account:contact' %}" method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                   <label class="mb-1" for="{{ form.name.id_for_label }}">Enter your name</label>
-                   {{ form.name }}
-                </div>
-                <br>
-                 <div class="form-group">
-                   <label class="mb-1" for="{{ form.email.id_for_label }}">Enter your email</label>
-                   {{ form.email }}
-                </div>
-                <br>
-                <div class="form-group">
-                   <label class="mb-1" for="{{ form.message.id_for_label }}">Enter your message</label>
-                   {{ form.message }}
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <p>Here you can send your problems ot our shop administration</p>
         </div>
+        <form action="{% url 'user_account:contact' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-6 text-left">
+                            <div class="form-group name">
+                                {{ form.name }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group email">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group message">
+                                {{ form.message }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <button type="submit" class="btn-md btn-theme float-left">Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="contact-info-2">
+                        <div class="ci-box">
+                            <div class="icon">
+                                <i class="fa-solid fa-phone" style="color: #030303;"></i>
+                            </div>
+                            <div class="detail">
+                                <h5>Phone:</h5>
+                                <p><a href="#">+015236798822</a></p>
+                            </div>
+                        </div>
+                        <div class="ci-box">
+                            <div class="icon">
+                                <i class="fa-solid fa-envelope" style="color: #000000;"></i>
+                            </div>
+                            <div class="detail">
+                                <h5>Email:</h5>
+                                <p><a href="#">ydjx46@gmail.com</p></a>
+                            </div>
+                        </div>
+                        <div class="ci-box">
+                            <div class="icon">
+                                <i class="fa-solid fa-earth-americas" style="color: #000000;"></i>
+                            </div>
+                            <div class="detail">
+                                <h5>Web:</h5>
+                                <p><a href="#">ydjx46@gmail.com</a></p>
+                            </div>
+                        </div>
+                        <div class="ci-box mb-0">
+                            <div class="icon">
+                                <i class="fa-solid fa-fax" style="color: #000000;"></i>
+                            </div>
+                            <div class="detail">
+                                <h5>Fax:</h5>
+                                <p><a href="#">+015236798822</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-</body>
+</div>
+
+<hr>
+
+{% include 'footer.html' %}
+
 {% endblock %}

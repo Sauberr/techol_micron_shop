@@ -19,6 +19,8 @@ urlpatterns = [
     path('delete-from-favorites/<int:product_id>/', delete_from_favorites, name='delete_from_favorites'),
     # Add reviews
     path('add-review/<int:product_id>/', add_review, name='add_review'),
+    # Delete reviews
     path('delete-review/<int:review_id>/', delete_review, name='delete_review'),
+    # Update reviews
     path('update-review/<int:review_id>/', update_review, name='update_review'),
 ]

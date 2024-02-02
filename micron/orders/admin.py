@@ -76,3 +76,4 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ["paid", "created", "updated"]
     inlines = [OrderItemInLine]
     actions = [export_to_csv]
+    list_display_links = ("id", "first_name", "last_name", 'email')

@@ -8,18 +8,15 @@
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 {% endblock %}
 
-
+{% block title %} {{ title }} {% endblock %}
 
 
 {% block content %}
 
-{% block title %} {{ title }} {% endblock %}
 
-{% block header %}
 
 {% include 'navbar.html' %}
 
-{% endblock %}
 
 <main>
     <div class="container authentication-container">
@@ -107,5 +104,10 @@
         </div>
     </div>
 </main>
+
+<hr>
+
+{% include 'footer.html' %}
+
 
 {% endblock %}

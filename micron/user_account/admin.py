@@ -1,11 +1,18 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from user_account.models import EmailVerification, User, Contact
 
 
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ("username",)
+    def thumbnail(self, object):
+        return format_html('<img src="{}" width="40" style="border-radius: 50px;" />'.format(object.image.url))
+
+    thumbnail.short_description = 'Photo'
+    list_display = ("username", 'thumbnail')
+    list_display_links = ("username", 'thumbnail')
 
 
 @admin.register(Contact)
