@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from parler.models import TranslatableModel, TranslatedFields
+from ckeditor.fields import RichTextField
 
 from user_account.models import User
 
@@ -27,7 +28,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
-    description = models.TextField(blank=True)
+    description = RichTextField()
     category = models.ForeignKey(
         Category, related_name='products', on_delete=models.CASCADE
     )

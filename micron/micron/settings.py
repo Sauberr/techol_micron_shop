@@ -26,6 +26,7 @@ DOMAIN_NAME = 'http://localhost:8000'
 
 INSTALLED_APPS = [
     'jazzmin',
+    "ckeditor",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
