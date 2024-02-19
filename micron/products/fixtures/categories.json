@@ -38,5 +38,13 @@
          "name":"airpods",
          "slug":"airpods"
       }
+   },
+   {
+      "model":"products.category",
+      "pk":6,
+      "fields":{
+         "name":"console",
+         "slug":"console"
+      }
    }
 ]

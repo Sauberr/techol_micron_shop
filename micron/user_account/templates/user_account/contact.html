@@ -88,7 +88,7 @@ h1 span {
         <div class="main-title text-center">
             <h1>Contact <span>Us</span></h1>
             <hr>
-            <p>Here you can send your problems ot our shop administration</p>
+            <p>Here you can send your problems to our shop administration</p>
         </div>
         <form action="{% url 'user_account:contact' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}

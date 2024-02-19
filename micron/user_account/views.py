@@ -18,9 +18,8 @@ class UserLoginView(TitleMixin, SuccessMessageMixin, LoginView):
     template_name = "user_account/login.html"
     form_class = UserLoginForm
     success_message = "You were successfully logged in"
-    title = "Login"
+    title = "| Login"
     success_url = reverse_lazy("products:products")
-
 
     def form_valid(self, form):
         remember_me = form.cleaned_data["remember_me"]
@@ -40,7 +39,7 @@ def profile(request):
             return HttpResponseRedirect(reverse("user_account:profile"))
         else:
             print(form.errors)
-    context = {'title': 'Profile', 'form': form}
+    context = {'title': '| Profile', 'form': form}
     return render(request, 'user_account/profile.html', context)
 
 
@@ -62,7 +61,7 @@ def manage_shipping(request):
             shipping_user.user = request.user
             shipping_user.save()
             return redirect('user_account:profile')
-    context = {'title': 'Manage Shipping', 'form': form}
+    context = {'title': '| Manage Shipping', 'form': form}
     return render(request, 'user_account/manage_shipping.html', context)
 
 
@@ -75,7 +74,7 @@ def profile_management(request):
         if user_form.is_valid():
             user_form.save()
             return HttpResponseRedirect(reverse("user_account:profile"))
-    context = {'title': 'Profile Management', 'user_form': user_form}
+    context = {'title': '| Profile Management', 'user_form': user_form}
     return render(request, 'user_account/profile_management.html', context)
 
 
@@ -86,7 +85,7 @@ def delete_account(request):
         messages.success(request, 'Your account was successfully deleted')
         user.delete()
         return redirect('products:products')
-    context = {'title': 'Delete account'}
+    context = {'title': '| Delete account'}
     return render(request, 'user_account/delete_account.html', context)
 
 
@@ -96,7 +95,7 @@ class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):
     template_name = "user_account/registration/registration.html"
     success_url = reverse_lazy("user_account:login")
     success_message = "Your account was successfully created"
-    title = "Registration"
+    title = "| Registration"
 
 
 class ResetPasswordView(TitleMixin, SuccessMessageMixin, PasswordResetView):
@@ -110,7 +109,7 @@ class ResetPasswordView(TitleMixin, SuccessMessageMixin, PasswordResetView):
         "please make sure you've entered the address you registered with, and check your spam folder."
     )
     success_url = reverse_lazy("user_account:login")
-    title = "Reset Password"
+    title = "| Reset Password"
 
 
 class ChangePasswordView(TitleMixin, SuccessMessageMixin, PasswordChangeView):
@@ -118,11 +117,11 @@ class ChangePasswordView(TitleMixin, SuccessMessageMixin, PasswordChangeView):
     form_class = PasswordChangingForm
     success_message = "Your password was successfully changed"
     success_url = reverse_lazy("user_account:login")
-    title = "Change Password"
+    title = "| Change Password"
 
 
 class EmailVerificationView(TitleMixin, TemplateView):
-    title = "Micron - Email Verification"
+    title = "| Email Verification"
     template_name = "user_account/registration/email_verification.html"
 
     def get(self, request, *args, **kwargs):
@@ -164,5 +163,5 @@ def contact(request):
             return redirect('products:products')
         else:
             messages.error(request, 'Please correct the error below')
-    context = {'title': 'Contact US', 'form': form}
+    context = {'title': '| Contact US', 'form': form}
     return render(request, 'user_account/contact.html', context)

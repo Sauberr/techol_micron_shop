@@ -161,7 +161,7 @@
           <div class="swiper product-swiper">
             <div class="swiper-wrapper">
               {% for product in products %}
-                {% if product.category.name == 'iphone' %}
+                {% if product.category.name == 'iphone' or product.category.name == 'телефон' %}
                   <div class="swiper-slide">
                     <div class="product-card position-relative">
                       <div class="image-holder">
@@ -201,7 +201,7 @@
           <div class="swiper product-watch-swiper">
             <div class="swiper-wrapper">
               {% for product in products %}
-                {% if product.category.name == 'watch' %}
+                {% if product.category.name == 'watch' or product.category.name == 'годинник' %}
               <div class="swiper-slide">
                 <div class="product-card position-relative">
                   <div class="image-holder">
@@ -244,59 +244,23 @@
                 </svg>
               </div>
               <div class="swiper-wrapper">
-                <div class="swiper-slide text-center d-flex justify-content-center">
-                  <div class="review-item col-md-10">
+            {% for review in reviews %}
+            <div class="swiper-slide text-center d-flex justify-content-center">
+                <div class="review-item col-md-10">
                     <i class="icon icon-review"></i>
-                    <blockquote>“Tempus oncu enim pellen tesque este pretium in neque, elit morbi sagittis lorem habi mattis Pellen tesque pretium feugiat vel morbi suspen dise sagittis lorem habi tasse morbi.”</blockquote>
+                    <blockquote>“{{ review.text }}”</blockquote>
                     <div class="rating">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-half">
-                        <use xlink:href="#star-half"></use>
-                      </svg>
-                      <svg class="star star-empty">
-                        <use xlink:href="#star-empty"></use>
-                      </svg>
+                           {% for i in 'x'|rjust:review.stars %}
+                                <i class="fa-solid fa-star" style="color: #72AEC8;"></i>
+                        {% endfor %}
                     </div>
                     <div class="author-detail">
-                      <div class="name text-dark text-uppercase pt-2">Emma Chamberlin</div>
+                        <div class="name text-dark text-uppercase pt-2">{{ review.user|capfirst }}</div>
                     </div>
-                  </div>
                 </div>
-                <div class="swiper-slide text-center d-flex justify-content-center">
-                  <div class="review-item col-md-10">
-                    <i class="icon icon-review"></i>
-                    <blockquote>“A blog is a digital publication that can complement a website or exist independently. A blog may include articles, short posts, listicles, infographics, videos, and other digital content.”</blockquote>
-                    <div class="rating">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-half">
-                        <use xlink:href="#star-half"></use>
-                      </svg>
-                      <svg class="star star-empty">
-                        <use xlink:href="#star-empty"></use>
-                      </svg>
-                    </div>
-                    <div class="author-detail">
-                      <div class="name text-dark text-uppercase pt-2">Jennie Rose</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            </div>
+            {% endfor %}
+</div>
             </div>
             <div class="swiper-icon swiper-arrow swiper-arrow-next position-absolute d-flex align-items-center">
               <svg class="chevron-right">
@@ -338,7 +302,7 @@
           </div>
           <div class="d-flex flex-wrap">
             <figure class="instagram-item pe-2">
-              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative">
+              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative" target="_blank">
                 <img src="{% static 'test/images/insta-item1.jpg' %}" alt="instagram" class="insta-image">
                 <div class="icon-overlay position-absolute d-flex justify-content-center">
                   <svg class="instagram">
@@ -348,8 +312,8 @@
               </a>
             </figure>
             <figure class="instagram-item pe-2">
-              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative">
-                <img src="{% static 'test/images/insta-item2.jpg' %}" alt="instagram" class="insta-image">
+              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative" target="_blank">
+                <img src="{% static 'test/images/insta-item2.jpg' %}"  alt="instagram" class="insta-image">
                 <div class="icon-overlay position-absolute d-flex justify-content-center">
                   <svg class="instagram">
                     <use xlink:href="#instagram"></use>
@@ -358,7 +322,7 @@
               </a>
             </figure>
             <figure class="instagram-item pe-2">
-              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative">
+              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative" target="_blank">
                 <img src="{% static 'test/images/insta-item3.jpg' %}" alt="instagram" class="insta-image">
                 <div class="icon-overlay position-absolute d-flex justify-content-center">
                   <svg class="instagram">
@@ -368,7 +332,7 @@
               </a>
             </figure>
             <figure class="instagram-item pe-2">
-              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative">
+              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative" target="_blank">
                 <img src="{% static 'test/images/insta-item4.jpg' %}" alt="instagram" class="insta-image">
                 <div class="icon-overlay position-absolute d-flex justify-content-center">
                   <svg class="instagram">
@@ -378,7 +342,7 @@
               </a>
             </figure>
             <figure class="instagram-item pe-2">
-              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative">
+              <a href="https://www.instagram.com/vasyl.laptiev?igsh=MW5vbzA4b3FqZ3VsYg%3D%3D" class="image-link position-relative" target="_blank">
                 <img src="{% static 'test/images/insta-item5.jpg' %}" alt="instagram" class="insta-image">
                 <div class="icon-overlay position-absolute d-flex justify-content-center">
                   <svg class="instagram">

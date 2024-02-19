@@ -2,24 +2,61 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+import environ
+
+env = environ.Env(
+    DEBUG=(bool),
+    SECRET_KEY=(str),
+    DOMAIN_NAME=(str),
+
+    DATABASE_NAME=(str),
+    DATABASE_USER=(str),
+    DATABASE_PASSWORD=(str),
+    DATABASE_HOST=(str),
+    DATABASE_PORT=(int),
+
+    REDIS_HOST=(str),
+    REDIS_PORT=(int),
+    REDIS_DB=(int),
+
+    EMAIL_BACKEND=(str),
+    EMAIL_HOST=(str),
+    EMAIL_PORT=(int),
+    EMAIL_USE_TLS=(bool),
+    EMAIL_HOST_USER=(str),
+    EMAIL_HOST_PASSWORD=(str),
+
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=(str),
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=(str),
+
+    SOCIAL_AUTH_GITHUB_KEY=(str),
+    SOCIAL_AUTH_GITHUB_SECRET=(str),
+
+    STRIPE_PUBLISHABLE_KEY=(str),
+    STRIPE_SECRET_KEY=(str),
+    STRIPE_API_VERSION=(str),
+    STRIPE_WEBHOOK_SECRET=(str),
+)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-exbfq65i$ndrl2%2d)^1_#af_be&@yxtg4)x$3ft79&2xlz(*+'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN_NAME = 'http://localhost:8000'
+DOMAIN_NAME = env('DOMAIN_NAME')
 
 
 # Application definition
@@ -117,10 +154,15 @@ WSGI_APPLICATION = 'micron.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
+
 
 
 # Password validation
@@ -181,9 +223,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Settings parameters for Redis
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 1
+REDIS_HOST = env('REDIS_HOST')
+REDIS_PORT = env('REDIS_PORT')
+REDIS_DB = env('REDIS_DB')
 
 # Caches
 
@@ -204,12 +246,12 @@ LOGOUT_URL = '/user_account/logout/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sauberrtest@gmail.com'
-EMAIL_HOST_PASSWORD = 'savxylyptwlutksb'
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 CART_SESSION_ID = 'cart'
 
@@ -221,19 +263,19 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
-    '130194174317-ssov539meanpo8d1h1p3ddjno8crfvpd.apps.googleusercontent.com'
+    env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 )
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
-SOCIAL_AUTH_GITHUB_KEY = 'c6b403dac16cb61343df'
-SOCIAL_AUTH_GITHUB_SECRET = '56510ba5ac62aea06343b001f21b6c5e672d3362'
+SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
 
 # Stripe
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51NbmH0IdGKHqUDXlSJlEuoaSJLt1wDrvl2ivyMhvexJPBwKFZB9jE3Dq7GAXutUhjIHumosq52Vp9T81JmXZMqjx00y7WZM4tX' # Публикуемый ключ
-STRIPE_SECRET_KEY = 'sk_test_51NbmH0IdGKHqUDXlaHLKyGsr0bQKtjrf9tfqulgzaTAUNYK0pgF0gcVIZJhaeCt3qyJdlhjRU2N7w9RwON5cr8kt00ZbUNW4W1' # Секретный ключ
-STRIPE_API_VERSION = '2022-08-01'
-STRIPE_WEBHOOK_SECRET = 'whsec_5dc010a0fc1f1a4c20a58020dace6674d564423c62fea690974a73feec2bb71f' # Секретный ключ веб-хука
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = env('STRIPE_API_VERSION')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
 # Logger
 
@@ -289,7 +331,6 @@ REST_FRAMEWORK = {
 
 }
 
-
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -338,5 +379,15 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Shopping made easy....",
     "site_logo": "images/logo.png",
     "copyright": "Micron - All Right Reserved @ Copyright 2024 - Till Date",
-    "order_with_respect_to": ["products", "user_account", "payment", "coupons", "orders", "cart", "api"]
+    "order_with_respect_to": ["products", "user_account", "payment", "coupons", "orders", "cart", "api"],
+    "icons": {
+        "products.Product": "fa fa-th",
+        "products.Category": "fa fa-list",
+        "products.Review": "fa fa-star",
+        "user_account.User": "fa fa-user",
+        "user_account.EmailVerification": "fa fa-envelope",
+        "user_account.Contact": "fa fa-comment",
+        "coupons.Coupon": "fa fa-tag",
+        "orders.Order": "fa fa-shopping-cart",
+    }
 }

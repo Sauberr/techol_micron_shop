@@ -9,14 +9,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-12 23:37+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2024-02-19 18:52+0000\n"
+"Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
 
 #: .\cart\forms.py:11
 msgid "Quantity"
@@ -40,19 +41,19 @@ msgstr ""
 
 #: .\micron\urls.py:18
 msgid "cart/"
-msgstr ""
+msgstr "кошик"
 
 #: .\micron\urls.py:20 .\micron\urls.py:26
 msgid "orders/"
-msgstr ""
+msgstr "замовлення"
 
 #: .\micron\urls.py:28
 msgid "payment/"
-msgstr ""
+msgstr "оплата"
 
 #: .\micron\urls.py:30
 msgid "coupons/"
-msgstr ""
+msgstr "купони"
 
 #: .\products\templates\products\add_reviews.html:13
 #: .\products\templates\products\update_review.html:13

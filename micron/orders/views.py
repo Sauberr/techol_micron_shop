@@ -56,6 +56,7 @@ def admin_order_detail(request, order_id: int):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'admin/orders/order/detail.html', {'order': order})
 
+
 login_required(login_url='/accounts/login/')
 @staff_member_required
 def admin_order_pdf(request, order_id: int):
@@ -71,7 +72,7 @@ def admin_order_pdf(request, order_id: int):
 login_required(login_url='/accounts/login/')
 def orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created')
-    return render(request, 'orders/order/orders.html', {'orders': orders, 'title': 'Orders'})
+    return render(request, 'orders/order/orders.html', {'orders': orders, 'title': '| Orders'})
 
 
 login_required(login_url='/accounts/login/')

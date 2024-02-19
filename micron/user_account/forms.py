@@ -91,7 +91,7 @@ class ContactForm(forms.ModelForm):
     )
     message = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control py-2", "placeholder": "Enter your message"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter your message", "style": "resize:none;"}
         )
     )
 
@@ -103,12 +103,12 @@ class ContactForm(forms.ModelForm):
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter first_name"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter First name"}
         )
     )
     last_name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter last_name"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter Last name"}
         )
     )
     username = forms.CharField(
@@ -128,7 +128,7 @@ class UserRegistrationForm(UserCreationForm):
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter password again"}
+            attrs={"class": "form-control py-2", "placeholder": "Confirm password"}
         )
     )
     captcha = CaptchaField()
@@ -185,7 +185,7 @@ class PasswordChangingForm(PasswordChangeForm):
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control py-2",
-                "placeholder": "Enter new password again",
+                "placeholder": "Confirm password",
             }
         )
     )

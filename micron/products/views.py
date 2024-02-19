@@ -5,6 +5,7 @@ from cart.forms import CartAddProductForm
 from products.models import Category, Product, Review
 from .forms import ReviewForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .utils import paginateprodcuts, searchproducts
 from .recommender import Recommender
@@ -13,12 +14,15 @@ import logging
 
 logger = logging.getLogger('main')
 
+
 def index(request):
     products, search_query = searchproducts(request)
+    reviews = Review.objects.all()
     context = {
-        'title': 'Products',
+        'title': '| Products',
         'products': products,
         'search_query': search_query,
+        'reviews': reviews,
     }
     return render(request, 'index.html', context)
 
@@ -51,7 +55,7 @@ def products(request):
 
     custom_range, products = paginateprodcuts(request, products, 6)
     context = {
-        'title': 'Products',
+        'title': '| Products',
         'products': products,
         'search_query': search_query,
         'custom_range': custom_range,
@@ -60,7 +64,8 @@ def products(request):
 
 
 def product_detail(request, product_slug: str):
-    product = get_object_or_404(Product, slug=product_slug, available=True)
+    language = request.LANGUAGE_CODE
+    product = get_object_or_404(Product, translations__language_code=language, translations__slug=product_slug, available=True)
     cart_product_form = CartAddProductForm()
     r = Recommender()
     recommended_products = r.suggest_products_for([product], 4)
@@ -71,7 +76,7 @@ def product_detail(request, product_slug: str):
         average_stars = None
     context = {
         'product': product,
-        'title': 'Product detail page',
+        'title': '| Product detail page',
         'cart_product_form': cart_product_form,
         'recommended_products': recommended_products,
         'reviews': reviews,
@@ -86,12 +91,16 @@ def categories(request):
 
 
 def list_category(request, category_slug=None):
-    category = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category)
-    context = {'products': products, 'category': category}
-    return render(request, 'products/list_category.html', context)
+    if category_slug:
+        language = request.LANGUAGE_CODE
+        print(f'language_code: {language}, category_slug: {category_slug}')  # add this line
+        category = get_object_or_404(Category, translations__language_code=language, translations__slug=category_slug)
+        products = Product.objects.filter(category=category)
+        context = {'products': products, 'category': category}
+        return render(request, 'products/list_category.html', context)
 
 
+@login_required
 def add_to_favorite(request, product_id: int):
     if request.user.is_authenticated:
         try:
@@ -102,15 +111,17 @@ def add_to_favorite(request, product_id: int):
         return redirect('products:products')
 
 
+@login_required
 def favorite_products(request):
     if request.user.is_authenticated:
         favorite_products = request.user.favorite_products.all()
-        context = {'favorite_products': favorite_products, 'title': 'Favorite products'}
+        context = {'favorite_products': favorite_products, 'title': '| Favorite products'}
         return render(request, 'products/favorite_products.html', context)
     else:
         return redirect('user_account:login')
 
 
+@login_required
 def delete_from_favorites(request, product_id: int):
     if request.user.is_authenticated:
         try:
@@ -121,6 +132,7 @@ def delete_from_favorites(request, product_id: int):
         return redirect('products:favorite_products')
 
 
+@login_required
 def add_review(request, product_id: int):
     product = get_object_or_404(Product, id=product_id)
 
@@ -139,9 +151,10 @@ def add_review(request, product_id: int):
             return redirect('products:product_detail', product_slug=product.slug)
     else:
         form = ReviewForm()
-    return render(request, 'products/add_reviews.html', {'form': form, 'product': product})
+    return render(request, 'products/add_reviews.html', {'title': '| Add review', 'form': form, 'product': product})
 
 
+@login_required
 def delete_review(request, review_id: int):
     review = get_object_or_404(Review, id=review_id)
 
@@ -154,6 +167,7 @@ def delete_review(request, review_id: int):
     return redirect('products:product_detail', product_slug=review.product.slug)
 
 
+@login_required
 def update_review(request, review_id: int):
     review = get_object_or_404(Review, id=review_id)
 
@@ -170,4 +184,4 @@ def update_review(request, review_id: int):
     else:
         form = ReviewForm(instance=review)
 
-    return render(request, 'products/update_review.html', {'form': form, 'product': review.product})
+    return render(request, 'products/update_review.html', {'title': '| Update review', 'form': form, 'product': review.product})

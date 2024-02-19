@@ -9,7 +9,7 @@ def searchproducts(request):
     if request.GET.get('search_query'):
         search_query = request.GET['search_query']
 
-    products = Product.objects.distinct().filter(Q(name__icontains=search_query))
+    products = Product.objects.distinct().filter(Q(translations__name__icontains=search_query))
 
     if not products.exists():
         messages.error(request, "No search results found. Please try again.")

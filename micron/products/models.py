@@ -6,15 +6,17 @@ from ckeditor.fields import RichTextField
 from user_account.models import User
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-
+class Category(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=200),
+        slug=models.SlugField(max_length=200,
+        unique=True),
+)
     class Meta:
-        ordering = ['name']
-        indexes = [
-            models.Index(fields=['name']),
-        ]
+        # ordering = ['name']
+        # indexes = [
+        # models.Index(fields=['name']),
+        # ]
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
@@ -25,10 +27,12 @@ class Category(models.Model):
         return reverse('products:list_category', args=[self.slug])
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
-    description = RichTextField()
+class Product(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=200),
+        slug=models.SlugField(max_length=200),
+        description=models.TextField(blank=True)
+    )
     category = models.ForeignKey(
         Category, related_name='products', on_delete=models.CASCADE
     )
@@ -43,10 +47,10 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['name']
+        # ordering = ['name']
         indexes = [
-            models.Index(fields=['id', 'slug']),
-            models.Index(fields=['name']),
+            # models.Index(fields=['id', 'slug']),
+            # models.Index(fields=['name']),
             models.Index(fields=['-created']),
         ]
         verbose_name = 'product'
@@ -61,11 +65,11 @@ class Product(models.Model):
 
 class Review(models.Model):
     STARS_CHOICES = (
-        (1, '1 star'),
-        (2, '2 stars'),
-        (3, '3 stars'),
-        (4, '4 stars'),
-        (5, '5 stars'),
+        (1, '★☆☆☆☆'),
+        (2, '★★☆☆☆'),
+        (3, '★★★☆☆'),
+        (4, '★★★★☆'),
+        (5, '★★★★★'),
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

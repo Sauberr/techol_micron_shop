@@ -104,7 +104,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ review.product.name }}</h5>
                             <p class="card-text">
-                                {% for i in 'x'|rjust:average_stars %}
+                                {% for i in 'x'|rjust:review.stars %}
                                     <i class="fa-solid fa-star" style="color: #ffa800;"></i>
                                 {% endfor %}
 
