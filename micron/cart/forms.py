@@ -8,7 +8,7 @@ class CartAddProductForm(forms.Form):
     quantity = forms.TypedChoiceField(
         choices=PRODUCT_QUANTITY_CHOICES,
         coerce=int,
-        label=_('Quantity'),
+        label=_("Quantity"),
         widget=forms.Select(
             attrs={
                 "class": "form-control text-center me-3",

@@ -3,16 +3,20 @@ from django import forms
 from django.contrib.auth.forms import (
     AuthenticationForm,
     PasswordChangeForm,
-    UserCreationForm, UserChangeForm,
+    UserChangeForm,
+    UserCreationForm,
 )
+from user_account.models import Contact, User
 from user_account.tasks import send_email_verification
-from user_account.models import User, Contact
 
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter username or email"}
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Enter username or email",
+            }
         )
     )
     password = forms.CharField(
@@ -30,41 +34,66 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserProfileForm(UserChangeForm):
-    first_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter first_name'
-    }))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter last_name'
-    }))
-    image = forms.ImageField(widget=forms.FileInput(attrs={
-        'class': 'custom-file-input',
-    }), required=False)
-    username = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter username', 'readonly': True,
-    }))
-    email = forms.CharField(widget=forms.EmailInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter gmail', 'readonly': True,
-    }))
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter first_name"}
+        )
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter last_name"}
+        )
+    )
+    image = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                "class": "custom-file-input",
+            }
+        ),
+        required=False,
+    )
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Enter username",
+                "readonly": True,
+            }
+        )
+    )
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Enter gmail",
+                "readonly": True,
+            }
+        )
+    )
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'image', 'username', 'email')
+        fields = ("first_name", "last_name", "image", "username", "email")
 
 
 class UserUpdateForm(forms.ModelForm):
     password = None
 
-    username = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter username'
-    }))
-    email = forms.CharField(widget=forms.EmailInput(attrs={
-        'class': 'form-control py-2', 'placeholder': 'Enter gmail'
-    }))
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter username"}
+        )
+    )
+    email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={"class": "form-control py-2", "placeholder": "Enter gmail"}
+        )
+    )
 
     class Meta:
         model = User
-        fields = ['username', 'email']
-        exclude = ['password1', 'password2']
+        fields = ["username", "email"]
+        exclude = ["password1", "password2"]
 
     # Email validation
 
@@ -91,13 +120,17 @@ class ContactForm(forms.ModelForm):
     )
     message = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control py-2", "placeholder": "Enter your message", "style": "resize:none;"}
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Enter your message",
+                "style": "resize:none;",
+            }
         )
     )
 
     class Meta:
         model = Contact
-        fields = ('name', 'email', 'message')
+        fields = ("name", "email", "message")
 
 
 class UserRegistrationForm(UserCreationForm):

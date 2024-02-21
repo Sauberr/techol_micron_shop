@@ -9,7 +9,7 @@ from django.utils.timezone import now
 class User(AbstractUser):
     image = models.ImageField(upload_to="avatar", null=True, blank=True)
     is_verified_email = models.BooleanField(default=False)
-    favorite_products = models.ManyToManyField('products.Product', blank=True)
+    favorite_products = models.ManyToManyField("products.Product", blank=True)
 
 
 class EmailVerification(models.Model):

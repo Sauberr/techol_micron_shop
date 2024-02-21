@@ -11,3 +11,11 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 line_length = 88
+
+[tool.ruff]
+line-length = 88
+ignore = ['E501']
+
+[tool.autoflake]
+check_diff = true
+imports = ["sqlalchemy", "app"]

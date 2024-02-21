@@ -1,15 +1,18 @@
+from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
-from django.contrib import messages
+
 from .models import Product
 
 
 def searchproducts(request):
-    search_query = ''
-    if request.GET.get('search_query'):
-        search_query = request.GET['search_query']
+    search_query = ""
+    if request.GET.get("search_query"):
+        search_query = request.GET["search_query"]
 
-    products = Product.objects.distinct().filter(Q(translations__name__icontains=search_query))
+    products = Product.objects.distinct().filter(
+        Q(translations__name__icontains=search_query)
+    )
 
     if not products.exists():
         messages.error(request, "No search results found. Please try again.")
@@ -18,7 +21,7 @@ def searchproducts(request):
 
 
 def paginateprodcuts(request, products, results):
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     paginator = Paginator(products, results)
     try:
         products = paginator.page(page)

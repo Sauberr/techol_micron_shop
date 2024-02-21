@@ -1,6 +1,6 @@
+from coupons.forms import CouponApplyForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from coupons.forms import CouponApplyForm
 from products.models import Product
 
 from .cart import Cart
@@ -14,7 +14,11 @@ def cart_summary(request):
             initial={"quantity": item["quantity"], "override": True}
         )
     coupon_apply_form = CouponApplyForm()
-    context = {"title": "| Your shopping cart", "cart": cart, 'coupon_apply_form': coupon_apply_form}
+    context = {
+        "title": "| Your shopping cart",
+        "cart": cart,
+        "coupon_apply_form": coupon_apply_form,
+    }
     return render(request, "cart/cart-summary.html", context)
 
 

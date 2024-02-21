@@ -1,16 +1,22 @@
+from common.views import TitleMixin
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import HttpResponseRedirect, reverse, render, redirect
+from django.shortcuts import HttpResponseRedirect, redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
-from common.views import TitleMixin
-from user_account.forms import PasswordChangingForm, UserLoginForm, UserRegistrationForm, UserProfileForm, \
-    UserUpdateForm, ContactForm
-from user_account.models import EmailVerification, User
-from django.contrib import auth, messages
-from orders.models import Order
 from orders.forms import OrderCreateForm
+from orders.models import Order
+from user_account.forms import (
+    ContactForm,
+    PasswordChangingForm,
+    UserLoginForm,
+    UserProfileForm,
+    UserRegistrationForm,
+    UserUpdateForm,
+)
+from user_account.models import EmailVerification, User
 
 
 class UserLoginView(TitleMixin, SuccessMessageMixin, LoginView):
@@ -39,8 +45,8 @@ def profile(request):
             return HttpResponseRedirect(reverse("user_account:profile"))
         else:
             print(form.errors)
-    context = {'title': '| Profile', 'form': form}
-    return render(request, 'user_account/profile.html', context)
+    context = {"title": "| Profile", "form": form}
+    return render(request, "user_account/profile.html", context)
 
 
 @login_required
@@ -60,9 +66,9 @@ def manage_shipping(request):
             # Adding the FK itself
             shipping_user.user = request.user
             shipping_user.save()
-            return redirect('user_account:profile')
-    context = {'title': '| Manage Shipping', 'form': form}
-    return render(request, 'user_account/manage_shipping.html', context)
+            return redirect("user_account:profile")
+    context = {"title": "| Manage Shipping", "form": form}
+    return render(request, "user_account/manage_shipping.html", context)
 
 
 @login_required
@@ -74,19 +80,19 @@ def profile_management(request):
         if user_form.is_valid():
             user_form.save()
             return HttpResponseRedirect(reverse("user_account:profile"))
-    context = {'title': '| Profile Management', 'user_form': user_form}
-    return render(request, 'user_account/profile_management.html', context)
+    context = {"title": "| Profile Management", "user_form": user_form}
+    return render(request, "user_account/profile_management.html", context)
 
 
 @login_required
 def delete_account(request):
     user = User.objects.get(id=request.user.id)
-    if request.method == 'POST':
-        messages.success(request, 'Your account was successfully deleted')
+    if request.method == "POST":
+        messages.success(request, "Your account was successfully deleted")
         user.delete()
-        return redirect('products:products')
-    context = {'title': '| Delete account'}
-    return render(request, 'user_account/delete_account.html', context)
+        return redirect("products:products")
+    context = {"title": "| Delete account"}
+    return render(request, "user_account/delete_account.html", context)
 
 
 class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):
@@ -142,26 +148,26 @@ class EmailVerificationView(TitleMixin, TemplateView):
 def logout(request):
     try:
         for key in list(request.session.keys()):
-            if key == 'session_key':
+            if key == "session_key":
                 continue
             else:
                 del request.session[key]
     except KeyError:
         pass
-    messages.success(request, 'Logout Success')
+    messages.success(request, "Logout Success")
     auth.logout(request)
-    return redirect('products:products')
+    return redirect("products:products")
 
 
 def contact(request):
     form = ContactForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your message was successfully sent')
-            return redirect('products:products')
+            messages.success(request, "Your message was successfully sent")
+            return redirect("products:products")
         else:
-            messages.error(request, 'Please correct the error below')
-    context = {'title': '| Contact US', 'form': form}
-    return render(request, 'user_account/contact.html', context)
+            messages.error(request, "Please correct the error below")
+    context = {"title": "| Contact US", "form": form}
+    return render(request, "user_account/contact.html", context)

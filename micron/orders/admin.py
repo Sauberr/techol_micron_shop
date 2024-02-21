@@ -1,22 +1,25 @@
-from django.contrib import admin
 import csv
+import datetime
 
+from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from .models import Order, OrderItem
-from django.utils.safestring import mark_safe
-import datetime
-from django.http import HttpResponse
 
 
 def export_to_csv(modeladmin, request, queryset):
     opts = modeladmin.model._meta
-    content_disposition = f'attachment; filename={opts.verbose_name}.csv'
+    content_disposition = f"attachment; filename={opts.verbose_name}.csv"
     response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = content_disposition
+    response["Content-Disposition"] = content_disposition
     writer = csv.writer(response)
-    fields = [field for field in opts.get_fields() if not
-              field.many_to_many and not field.one_to_many]
+    fields = [
+        field
+        for field in opts.get_fields()
+        if not field.many_to_many and not field.one_to_many
+    ]
     # Write a first row with header information
     writer.writerow([field.verbose_name for field in fields])
     # Write data rows
@@ -29,6 +32,8 @@ def export_to_csv(modeladmin, request, queryset):
             data_row.append(value)
         writer.writerow(data_row)
     return response
+
+
 export_to_csv.short_description = "Export to CSV"
 
 
@@ -43,17 +48,21 @@ def order_stripe_payment(obj):
         html = f'<a href="{url}" target="_blank">{obj.stripe_if}</a>'
         return mark_safe(html)
     return ""
+
+
 order_stripe_payment.short_description = "Stripe Payment"
 
 
 def order_detail(obj):
-    url = reverse('orders:admin_order_detail', args=[obj.id])
+    url = reverse("orders:admin_order_detail", args=[obj.id])
     return mark_safe(f'<a href="{url}">View</a>')
 
 
 def order_pdf(obj):
-    url = reverse('orders:admin_order_pdf', args=[obj.id])
+    url = reverse("orders:admin_order_pdf", args=[obj.id])
     return mark_safe(f'<a href="{url}">PDF</a>')
+
+
 order_pdf.short_description = "Invoice"
 
 
@@ -76,4 +85,4 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ["paid", "created", "updated"]
     inlines = [OrderItemInLine]
     actions = [export_to_csv]
-    list_display_links = ("id", "first_name", "last_name", 'email')
+    list_display_links = ("id", "first_name", "last_name", "email")

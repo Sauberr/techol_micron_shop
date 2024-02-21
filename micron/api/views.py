@@ -1,11 +1,12 @@
-from rest_framework.viewsets import ModelViewSet
+from orders.models import Order
+from orders.serializers import OrderSerializer
 from products.models import Category, Product
 from products.serializers import CategorySerializer, ProductSerializer
-from orders.serializers import OrderSerializer
-from orders.models import Order
-from .permissions import IsAdminOrReadOnly
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
+from .permissions import IsAdminOrReadOnly
 
 
 class CategoryModelViewSet(ModelViewSet):
@@ -19,14 +20,11 @@ class ProductModelViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = (IsAdminOrReadOnly, IsAuthenticated)
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['translations__name', 'available']
-    ordering_fields = ['translations__name', 'created']
+    search_fields = ["translations__name", "available"]
+    ordering_fields = ["translations__name", "created"]
 
 
 class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAdminOrReadOnly, IsAuthenticated)
-
-
-

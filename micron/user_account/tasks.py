@@ -3,7 +3,6 @@ from datetime import timedelta
 
 from celery import shared_task
 from django.utils.timezone import now
-
 from user_account.models import EmailVerification, User
 
 
@@ -11,7 +10,9 @@ from user_account.models import EmailVerification, User
 def send_email_verification(user_id: int):
     user = User.objects.get(id=user_id)
     expiration = now() + timedelta(hours=48)
-    record = EmailVerification.objects.create(code=uuid.uuid4(), user=user, expiration=expiration)
+    record = EmailVerification.objects.create(
+        code=uuid.uuid4(), user=user, expiration=expiration
+    )
 
     try:
         record.send_verification_email()
