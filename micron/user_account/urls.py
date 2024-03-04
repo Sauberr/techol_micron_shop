@@ -22,7 +22,7 @@ urlpatterns = [
     # Logout page
     path("logout/", logout, name="logout"),
     # Profile page
-    path("profile/", profile, name="profile"),
+    path("profile/<int:profile_id>/", profile, name="profile"),
     # Delete account page
     path("delete-account/", delete_account, name="delete_account"),
     # Registration page

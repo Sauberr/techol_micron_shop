@@ -1,16 +1,19 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from user_account.models import Contact, EmailVerification, User
+from user_account.models import Contact, EmailVerification, User, Profile
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     def thumbnail(self, object):
-        return format_html(
-            '<img src="{}" width="40" style="border-radius: 50px;" />'.format(
-                object.image.url
+        if object.image and hasattr(object.image, 'url'):
+            return format_html(
+                '<img src="{}" width="40" style="border-radius: 50px;" />'.format(
+                    object.image.url
+                )
             )
-        )
+        else:
+            return 'No Image'
 
     thumbnail.short_description = "Photo"
     list_display = ("username", "thumbnail")
@@ -27,3 +30,19 @@ class EmailVerificationAdmin(admin.ModelAdmin):
     list_display = ("user", "code", "expiration")
     fields = ("user", "code", "expiration", "created")
     readonly_fields = ("created",)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    def thumbnail(self, object):
+        if object.image and hasattr(object.image, 'url'):
+            return format_html(
+                '<img src="{}" width="40" style="border-radius: 50px;" />'.format(
+                    object.image.url
+                )
+            )
+        else:
+            return 'No Image'
+    list_display = ("user", "first_name", "last_name", "email", "thumbnail", 'is_email_verified', 'created_at')
+    list_display_links = ("user", "first_name", "email")
+    fields = ("user", "first_name", "username", "last_name", "email", "image", "is_email_verified", 'created_at')

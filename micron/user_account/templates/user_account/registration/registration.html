@@ -6,6 +6,26 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<style>
+    .btn__pass {
+        cursor: pointer;
+        opacity: 0.3;
+        background: none;
+        border: none;
+    }
+    .btn__pass.active {
+        opacity: 1;
+    }
+
+.password-container .btn__pass {
+    position: absolute;
+    left: 90%;
+    top: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+</style>
 {% endblock %}
 
 {% block title %} {{ title }} {% endblock %}
@@ -49,13 +69,15 @@
                             {{ form.email }}
                             <i class="fa-solid fa-envelope" style="color: #000000;"></i>
                         </div>
-                        <div class="form-group form-box">
+                        <div class="form-group form-box password-container">
                             {{ form.password1 }}
-                            <i class="fa-solid fa-lock" style="color: #000000;"></i>
+                            <button class="js-btn-password btn__pass" style="color: #000000;" data-target="#js-first-password"><i class="fa-solid fa-eye-slash"></i></button>
+                            <i class="fa-solid fa-lock lock-icon" style="color: #000000;"></i>
                         </div>
-                        <div class="form-group form-box">
+                        <div class="form-group form-box password-container">
                             {{ form.password2 }}
-                            <i class="fa-solid fa-lock" style="color: #000000;"></i>
+                            <button class="js-btn-password btn__pass" style="color: #000000;" data-target="#js-second-password"><i class="fa-solid fa-eye-slash"></i></button>
+                            <i class="fa-solid fa-lock lock-icon" style="color: #000000;"></i>
                         </div>
                         <div class="form-group form-box" style="text-align: left;">
                             {{ form.captcha|as_crispy_field }}
@@ -81,7 +103,10 @@
 
 <hr>
 
+<script src="{% static 'js/password-eye.js' %}"></script>
+
 {% include 'footer.html' %}
+
 
 
 {% endblock %}

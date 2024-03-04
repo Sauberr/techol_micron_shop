@@ -376,6 +376,7 @@ JAZZMIN_SETTINGS = {
         "products.Review": "fa fa-star",
         "user_account.User": "fa fa-user",
         "user_account.EmailVerification": "fa fa-envelope",
+        "user_account.Profile": "fa fa-user-circle",
         "user_account.Contact": "fa fa-comment",
         "coupons.Coupon": "fa fa-tag",
         "orders.Order": "fa fa-shopping-cart",

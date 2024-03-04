@@ -6,7 +6,7 @@ from django.contrib.auth.forms import (
     UserChangeForm,
     UserCreationForm,
 )
-from user_account.models import Contact, User
+from user_account.models import Contact, User, Profile
 from user_account.tasks import send_email_verification
 
 
@@ -21,7 +21,7 @@ class UserLoginForm(AuthenticationForm):
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter password"}
+            attrs={"class": "form-control py-2 js-password-input", "placeholder": "Enter password"}
         )
     )
     remember_me = forms.BooleanField(
@@ -71,9 +71,31 @@ class UserProfileForm(UserChangeForm):
         )
     )
 
+    is_email_verified = forms.BooleanField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Verified email",
+                "readonly": True,
+            }
+        ),
+        required=False,
+    )
+
+    created_at = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={
+                "class": "form-control py-2",
+                "placeholder": "Enter date",
+                "readonly": True,
+            }
+        ),
+        required=False,
+    )
+
     class Meta:
-        model = User
-        fields = ("first_name", "last_name", "image", "username", "email")
+        model = Profile
+        fields = ("first_name", "last_name", "image", "username", "email", "is_email_verified", "created_at")
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -91,7 +113,7 @@ class UserUpdateForm(forms.ModelForm):
     )
 
     class Meta:
-        model = User
+        model = Profile
         fields = ["username", "email"]
         exclude = ["password1", "password2"]
 
@@ -156,12 +178,12 @@ class UserRegistrationForm(UserCreationForm):
     )
     password1 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control py-2", "placeholder": "Enter password"}
+            attrs={"class": "form-control py-2", "placeholder": "Enter password", "id": "js-first-password"}
         )
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control py-2", "placeholder": "Confirm password"}
+            attrs={"class": "form-control py-2", "placeholder": "Confirm password", "id": "js-second-password"}
         )
     )
     captcha = CaptchaField()

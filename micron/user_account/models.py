@@ -4,12 +4,27 @@ from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils import timezone
 
 
 class User(AbstractUser):
     image = models.ImageField(upload_to="avatar", null=True, blank=True)
     is_verified_email = models.BooleanField(default=False)
     favorite_products = models.ManyToManyField("products.Product", blank=True)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=True)
+    username = models.CharField(max_length=100, null=True, blank=True)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    image = models.ImageField(upload_to="avatar", null=True, blank=True)
+    is_email_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.username
 
 
 class EmailVerification(models.Model):

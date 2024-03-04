@@ -97,13 +97,15 @@ def categories(request):
 def list_category(request, category_slug=None):
     if category_slug:
         language = request.LANGUAGE_CODE
-        print(
-            f"language_code: {language}, category_slug: {category_slug}"
-        )  # add this line
+        category = get_object_or_404(
+            Category,
+            translations__slug=category_slug,
+        )
+        category_slug_in_new_language = category.translations.filter(language_code=language).first().slug
         category = get_object_or_404(
             Category,
             translations__language_code=language,
-            translations__slug=category_slug,
+            translations__slug=category_slug_in_new_language,
         )
         products = Product.objects.filter(category=category)
         context = {"products": products, "category": category}

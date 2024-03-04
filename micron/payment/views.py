@@ -56,7 +56,7 @@ def payment_process(request):
 
 
 class SuccessTemplateView(TitleMixin, TemplateView):
-    template_name = "payment/success.html"
+    template_name = "payment/completed.html"
     title = "Payment Success"
 
 

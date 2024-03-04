@@ -41,7 +41,7 @@
         <h3 class="text-center underline">Manage shipping</h3>
         <p>Please fill your shipping address.</p>
         <hr>
-        <form method="post" action="" autocomplete="off">
+        <form method="post" action="{% url 'user_account:manage_shipping' %}" autocomplete="off">
             {% csrf_token %}
             {{ form.first_name|as_crispy_field }}
             {{ form.last_name|as_crispy_field }}

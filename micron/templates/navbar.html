@@ -110,7 +110,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                     <li><p class="dropdown-item user-profile">{{ user }}'s Profile</p></li>
                                     <li><hr class="dropdown-divider"/></li>
-                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:profile' %}"><i class="fa-solid fa-user"></i> {% trans 'Profile' %}</a></li>
+                                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:profile' user.profile.id %}"><i class="fa-solid fa-user"></i> {% trans 'Profile' %}</a></li>
                                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'products:favorite_products' %}"> <i class="fa-solid fa-heart"></i> {% trans 'Favourite Products' %}</a></li>
                                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:password_change' %}"><i class="fa-solid fa-unlock"></i> {% trans 'Change Password' %}</a></li>
                                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'user_account:logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i> {% trans 'Logout' %}</a></li>

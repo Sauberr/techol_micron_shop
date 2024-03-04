@@ -10,13 +10,12 @@
 <link rel="stylesheet" href="{% static 'css/profile_management.css' %}">
 {% endblock %}
 
-
-
 {% block content %}
-<body>
+
+
     <div class="container">
         <h1>Update your account</h1>
-        <form action="" method="POST">
+        <form method="post" action="{% url 'user_account:profile_management' %}" autocomplete="off">
             {% csrf_token %}
             <div class="form-group">
                 {{ user_form.username|as_crispy_field }}
@@ -29,5 +28,4 @@
             </div>
         </form>
     </div>
-</body>
 {% endblock %}

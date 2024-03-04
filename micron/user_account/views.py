@@ -3,7 +3,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import HttpResponseRedirect, redirect, render, reverse
+from django.shortcuts import HttpResponseRedirect, redirect, render, reverse, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from orders.forms import OrderCreateForm
@@ -16,7 +16,7 @@ from user_account.forms import (
     UserRegistrationForm,
     UserUpdateForm,
 )
-from user_account.models import EmailVerification, User
+from user_account.models import EmailVerification, User, Profile
 
 
 class UserLoginView(TitleMixin, SuccessMessageMixin, LoginView):
@@ -35,16 +35,16 @@ class UserLoginView(TitleMixin, SuccessMessageMixin, LoginView):
         return super(UserLoginView, self).form_valid(form)
 
 
-@login_required
-def profile(request):
-    form = UserProfileForm(instance=request.user)
+@login_required()
+def profile(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse("user_account:profile"))
-        else:
-            print(form.errors)
+            return redirect('user_account:profile', request.user.profile.id)
+    else:
+        form = UserProfileForm(instance=profile)
     context = {"title": "| Profile", "form": form}
     return render(request, "user_account/profile.html", context)
 
@@ -66,7 +66,7 @@ def manage_shipping(request):
             # Adding the FK itself
             shipping_user.user = request.user
             shipping_user.save()
-            return redirect("user_account:profile")
+            return redirect("user_account:profile", request.user.profile.id)
     context = {"title": "| Manage Shipping", "form": form}
     return render(request, "user_account/manage_shipping.html", context)
 
@@ -74,19 +74,19 @@ def manage_shipping(request):
 @login_required
 def profile_management(request):
     # Updating our user's username and email
-    user_form = UserUpdateForm(instance=request.user)
+    user_form = UserUpdateForm(instance=request.user.profile)
     if request.method == "POST":
-        user_form = UserUpdateForm(request.POST, instance=request.user)
+        user_form = UserUpdateForm(request.POST, instance=request.user.profile)
         if user_form.is_valid():
             user_form.save()
-            return HttpResponseRedirect(reverse("user_account:profile"))
+            return redirect("user_account:profile", request.user.profile.id)
     context = {"title": "| Profile Management", "user_form": user_form}
     return render(request, "user_account/profile_management.html", context)
 
 
 @login_required
 def delete_account(request):
-    user = User.objects.get(id=request.user.id)
+    user = get_object_or_404(User, id=request.user.id)
     if request.method == "POST":
         messages.success(request, "Your account was successfully deleted")
         user.delete()
@@ -139,7 +139,9 @@ class EmailVerificationView(TitleMixin, TemplateView):
             and not email_verifications.first().is_expired()
         ):
             user.is_verified_email = True
+            user.profile.is_email_verified = True
             user.save()
+            user.profile.save()
             return super(EmailVerificationView, self).get(request, *args, **kwargs)
         else:
             return HttpResponseRedirect(reverse("products:products"))
