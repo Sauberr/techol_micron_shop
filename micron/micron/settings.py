@@ -133,7 +133,7 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "products.views.categories",
+                "products.context_processors.categories",
                 "django.contrib.messages.context_processors.messages",
                 "cart.context_processors.cart",
             ],
