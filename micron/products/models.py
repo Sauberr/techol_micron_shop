@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from parler.models import TranslatableModel, TranslatedFields
 from user_account.models import User
+from uuid import uuid4
 
 
 class Category(TranslatableModel):
