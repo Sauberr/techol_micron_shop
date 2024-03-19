@@ -54,7 +54,22 @@
     }
     .small {
         font-family: Arial, sans-serif;
-        font-size: 16px;
+        font-size: 20px;
+    }
+    .custom-file-upload {
+    /* Add your styles here */
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    }
+
+    .custom-file-upload .custom-file-label {
+        font-weight: bold;
+        color: #495057;
     }
 </style>
 {% endblock %}
@@ -97,15 +112,15 @@
             <div class="form-group">
               <label class="small mb-1" for="{{ form.last_name.id_for_label }}">Last name</label>
               {{ form.last_name }}
+                <br>
             </div>
           </div>
         </div>
         <div class="form-row mb-2">
           <div class="col-lg-12">
-             <div class="custom-file">
-               <br>
-               {{ form.image }}
-               <label class="custom-file-label" for="{{ form.image.id_for_label }}"></label>
+              <div class="custom-file-upload">
+                  <label for="{{ form.image.id_for_label }}" class="custom-file-label">
+                  {{ form.image }}
             </div>
           </div>
         </div>
@@ -140,7 +155,7 @@
         <hr>
         <div class="form-row">
           <div class="col-lg-12 text-center" style="margin-top: 12px;">
-            <button type="submit" id="add-button" class="btn btn-secondary btn-block">Edit</button>
+            <button type="submit" class="btn btn-dark">Save</button>
           </div>
         </div>
       </form>

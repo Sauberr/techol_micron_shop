@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from parler.models import TranslatableModel, TranslatedFields
 from user_account.models import User
-from uuid import uuid4
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(TranslatableModel):
@@ -30,7 +30,7 @@ class Product(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=200),
         slug=models.SlugField(max_length=200),
-        description=models.TextField(blank=True),
+        description=CKEditor5Field(config_name='extends', blank=True, null=True),
     )
     category = models.ForeignKey(
         Category, related_name="products", on_delete=models.CASCADE
@@ -74,7 +74,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     stars = models.IntegerField(choices=STARS_CHOICES)
-    text = models.TextField(max_length=300)
+    text = CKEditor5Field(config_name='extends')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

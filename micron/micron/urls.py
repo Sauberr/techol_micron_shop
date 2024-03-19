@@ -52,7 +52,9 @@ urlpatterns = i18n_patterns(
     path("api/", include("api.urls", namespace="api")),
     # Add rosetta
     path("rosetta/", include("rosetta.urls")),
-)
+    # Add CKEditor
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     path("payment/webhook/", webhooks.stripe_webhook, name="stripe-webhook"),

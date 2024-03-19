@@ -114,8 +114,8 @@
                             <h6 class="card-text">{{ review.text }}</h6>
 
                              {% if user == review.user %}
-                                <a href="{% url 'products:delete_review' review.id %}" class="btn btn-outline-danger">{% trans 'Delete' %}</a>
-                                <a href="{% url 'products:update_review' review.id %}" class="btn btn-outline-primary">{% trans 'Update' %}</a>
+                                <a href="{% url 'products:delete_review' review.id %}" class="btn btn-outline-dark">{% trans 'Delete' %}</a>
+                                <a href="{% url 'products:update_review' review.id %}" class="btn btn-outline-dark">{% trans 'Update' %}</a>
                             {% endif %}
 
                             <p class="card-text">

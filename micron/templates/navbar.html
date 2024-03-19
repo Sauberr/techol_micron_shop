@@ -63,7 +63,7 @@
                   <a {% if 'products/' in request.path %} class="nav-link me-4 active" href="{% url 'products:products' %}">Products {% else %}  class="nav-link me-4" href="{% url 'products:products' %}">Products {% endif %}</a>
                 </li>
                 <li class="nav-item">
-                    <a {% if 'orders/' in request.path %} class="nav-link me-4 active" href="{% url 'orders:orders' %}">Orders{% else %}  class="nav-link me-4" href="{% url 'orders:orders' %}">Orders {% endif %}</a>
+                   <a {% if 'orders/' in request.path %} class="nav-link me-4 active" href="{% url 'orders:orders' %}">Orders {% else %}  class="nav-link me-4" href="{% url 'orders:orders' %}">Orders {% endif %}</a>
                 </li>
                   <li class="nav-item">
                   <a {% if 'contact/' in request.path %} class="nav-link me-4 active" href="{% url 'user_account:contact' %}">Contact {% else %}  class="nav-link me-4" href="{% url 'user_account:contact' %}">Contact {% endif %}</a>

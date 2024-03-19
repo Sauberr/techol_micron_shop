@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils import timezone
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class User(AbstractUser):
@@ -61,7 +62,7 @@ class EmailVerification(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    message = models.TextField()
+    message = CKEditor5Field(config_name='extends')
 
     def __str__(self):
         return self.name
