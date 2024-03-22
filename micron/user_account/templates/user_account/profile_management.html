@@ -7,25 +7,40 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/profile_management.css' %}">
+<link rel="stylesheet" href="{% static 'css/login' %}">
+<style>
+    .btn-dark:hover {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+</style>
 {% endblock %}
 
 {% block content %}
 
+{% include 'navbar.html' %}
 
-    <div class="container">
-        <h1>Update your account</h1>
-        <form method="post" action="{% url 'user_account:profile_management' %}" autocomplete="off">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ user_form.username|as_crispy_field }}
-            </div>
-            <div class="form-group">
-                {{ user_form.email|as_crispy_field }}
-            </div>
-            <div class="form-group">
-                <button type="submit">Update your account</button>
-            </div>
-        </form>
-    </div>
+
+<div class="container col-7 my-5">
+    <h1 class="text-center">Update your account</h1>
+    <p class="text-sm">Please fill your email or username if you want to update.</p>
+    <hr>
+    <form method="post" action="{% url 'user_account:profile_management' %}" autocomplete="off">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ user_form.username|as_crispy_field }}
+        </div>
+        <div class="form-group">
+            {{ user_form.email|as_crispy_field }}
+        </div>
+        <div class="form-group d-flex justify-content-center">
+            <button type="submit" class="btn btn-outline-dark">Update your account</button>
+        </div>
+    </form>
+</div>
+
+<hr>
+
+{% include 'footer.html' %}
+
 {% endblock %}

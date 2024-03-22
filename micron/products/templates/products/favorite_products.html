@@ -36,11 +36,11 @@
         {% for product in favorite_products %}
           <div class="col-lg-4 mb-4">
             <div class="card">
-              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" width="270" height="418">
+              <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" width="270" height="418"></a>
               <div class="card-body">
                 <h5 class="card-title">
                   <a class="text-decoration-none title" href="{{ product.get_absolute_url }}">
-                    <i class="fas fa-heart" style="color: #fa0000;"></i> {{ product.name }}
+                    {{ product.name }}
                   </a>
                 </h5>
                 <h5 class="card-text">${{ product.price|intcomma }}</h5>

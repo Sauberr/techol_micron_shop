@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+import sentry_sdk
 
 import environ
 from django.utils.translation import gettext_lazy as _
@@ -473,3 +474,10 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+# Sentry
+
+sentry_sdk.init(
+    dsn="https://e549dfbc552e81ce8984800090e73f96@o4505772443172864.ingest.us.sentry.io/4506842888601600",
+    enable_tracing=True,
+)
