@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 import sentry_sdk
+from typing import Dict, List, Tuple
 
 import environ
 from django.utils.translation import gettext_lazy as _
@@ -57,7 +58,7 @@ DOMAIN_NAME = env("DOMAIN_NAME")
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS: Tuple[str, ...] = (
     "jazzmin",
     "django_ckeditor_5",
     "django.contrib.admin",
@@ -85,7 +86,7 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rosetta",
     "parler",
-]
+)
 
 LOCALE_PATHS = [
     BASE_DIR / "locale",
@@ -103,7 +104,7 @@ PARLER_LANGUAGES = {
 }
 
 
-MIDDLEWARE = [
+MIDDLEWARE: Tuple[str, ...] = (
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -113,7 +114,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-]
+)
 
 ROOT_URLCONF = "micron.urls"
 
@@ -250,7 +251,7 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 CART_SESSION_ID = "cart"
 
-AUTHENTICATION_BACKENDS = [
+AUTHENTICATION_BACKENDS: List[str] = [
     "django.contrib.auth.backends.ModelBackend",
     "user_account.authentication.EmailAuthBackend",
     "social_core.backends.google.GoogleOAuth2",
@@ -272,7 +273,7 @@ STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
 
 # Logger
 
-LOGGING = {
+LOGGING: Dict[str, ...] = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
@@ -302,7 +303,7 @@ LOGGING = {
 
 # DRF
 
-REST_FRAMEWORK = {
+REST_FRAMEWORK: Dict[str, ...] = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 3,
     "DEFAULT_RENDERER_CLASSES": [
@@ -320,7 +321,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-SIMPLE_JWT = {
+SIMPLE_JWT: Dict[str, ...] = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
@@ -356,7 +357,7 @@ SIMPLE_JWT = {
 
 # Jazzmin settings
 
-JAZZMIN_SETTINGS = {
+JAZZMIN_SETTINGS: Dict[str, ...] = {
     "site_title": "Micron Admin",
     "site_header": "Micron",
     "site_brand": "Shopping made easy....",
@@ -414,7 +415,7 @@ customColorPalette = [
             'label': 'Blue'
         },
     ]
-CKEDITOR_5_CONFIGS = {
+CKEDITOR_5_CONFIGS: Dict[str, ...] = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
                     'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
