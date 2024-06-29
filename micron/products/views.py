@@ -48,9 +48,10 @@ def products(request):
         "-date": "-created",
     }
     if order in order_fields:
-        products = products.order_by(order_fields[order])
-    else:
-        pass
+        if all(hasattr(product, 'price_with_discount') for product in products):
+            products = products.order_by(order_fields[order].replace('price', 'price_with_discount'))
+        else:
+            products = products.order_by(order_fields[order])
 
     custom_range, products = paginateprodcuts(request, products, 6)
     context = {
@@ -64,12 +65,28 @@ def products(request):
 
 def product_detail(request, product_slug: str):
     language = request.LANGUAGE_CODE
-    product = get_object_or_404(
-        Product,
-        translations__language_code=language,
-        translations__slug=product_slug,
-        available=True,
-    )
+    try:
+        product = Product.objects.get(
+            translations__language_code=language,
+            translations__slug=product_slug,
+            available=True,
+        )
+    except Product.DoesNotExist:
+        # Try to find the product in a different language
+        product_in_other_language = get_object_or_404(
+            Product,
+            translations__slug=product_slug,
+            available=True,
+        )
+        # Get the corresponding slug in the current language
+        product_slug_in_current_language = product_in_other_language.translations.filter(language_code=language).first().slug
+        product = get_object_or_404(
+            Product,
+            translations__language_code=language,
+            translations__slug=product_slug_in_current_language,
+            available=True,
+        )
+
     cart_product_form = CartAddProductForm()
     r = Recommender()
     recommended_products = r.suggest_products_for([product], 4)
