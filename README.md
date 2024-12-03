@@ -39,8 +39,18 @@ All actions should be executed from the source directory of the project and only
    ./manage.py migrate
    ./manage.py loaddata <path_to_fixture_files> 
    ```
+
+4. Install redis:
+   ```bash
+   redis-server
+   ```
+
+5. Install celery:
+   ```bash
+   celery -A app name worker -l INFO --pool=solo
+   ```
    
-4. Docker :
+6. Docker :
    ```bash
    docker-compose up
    ```
