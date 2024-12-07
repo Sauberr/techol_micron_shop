@@ -1,18 +1,16 @@
-# Pull official base Python Docker image
 FROM python:3.11
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+RUN apt update
+RUN mkdir /micron
 
-# Set work directory
-WORKDIR /code
-EXPOSE 8000
+WORKDIR /micron
 
-# Install dependencies
-RUN pip install --upgrade pip
-COPY requirements.txt /code/
-RUN pip install -r requirements.txt
+COPY ./micron ./micron
+COPY ./commands ./commands
 
-# Copy the Django project
-COPY . /code/
+COPY ./requirements.txt ./requirements.txt
+
+RUN python -m pip install --upgrade pip
+RUN pip install -r ./requirements.txt
+
+CMD ["bash"]
