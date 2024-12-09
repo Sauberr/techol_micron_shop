@@ -54,3 +54,7 @@ All actions should be executed from the source directory of the project and only
    ```bash
    docker-compose up
    ```
+
+## License
+
+This project uses the [MIT] license(https://github.com/Sauberr/techol-micron-shop/blob/master/LICENSE)
